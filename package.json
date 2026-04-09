@@ -1,0 +1,27 @@
+{
+	"name": "gonvy",
+	"version": "0.0.0",
+	"license": "AGPL-3.0-only",
+	"private": true,
+	"workspaces": [
+		"apps/*"
+	],
+	"scripts": {
+		"dev": "turbo dev",
+		"start": "turbo start",
+		"build": "turbo build",
+		"test": "turbo test",
+		"lint": "turbo lint",
+		"lint:fix": "turbo lint:fix",
+		"prepare": "husky"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.4.10",
+		"@types/node": "^25.5.2",
+		"dotenv-cli": "^11.0.0",
+		"husky": "^9.1.7",
+		"lint-staged": "^16.4.0",
+		"turbo": "^2.9.5"
+	},
+	"packageManager": "npm@11.6.2"
+}
