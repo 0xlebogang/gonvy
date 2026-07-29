@@ -1,9 +1,14 @@
 package user
 
-import "context"
+import (
+	"context"
+
+	"github.com/0xlebogang/gonvy/api/internal/password"
+)
 
 type Service interface {
 	CreateNewUser(ctx context.Context, b *UserRequest) (*User, error)
+	VerifyUser(ctx context.Context, b *UserLoginRequest) error
 	FetchAllUsers(ctx context.Context) (*[]User, error)
 	FetchUserByID(ctx context.Context, id string) (*User, error)
 	FetchUserByEmail(ctx context.Context, email string) (*User, error)
@@ -12,15 +17,29 @@ type Service interface {
 }
 
 type service struct {
-	repo Repository
+	repo     Repository
+	password password.Password
 }
 
-func NewService(r Repository) Service {
-	return &service{repo: r}
+func NewService(r Repository, p password.Password) Service {
+	return &service{repo: r, password: p}
 }
 
 func (s *service) CreateNewUser(ctx context.Context, b *UserRequest) (*User, error) {
+	hashedPassword, err := s.password.Hash(b.Password)
+	if err != nil {
+		return nil, err
+	}
+	b.Password = hashedPassword
 	return s.repo.CreateUser(ctx, b)
+}
+
+func (s *service) VerifyUser(ctx context.Context, b *UserLoginRequest) error {
+	user, err := s.repo.FindUserByEmail(ctx, b.Email)
+	if err != nil {
+		return err
+	}
+	return s.password.Check(user.Password, b.Password)
 }
 
 func (s *service) FetchAllUsers(ctx context.Context) (*[]User, error) {

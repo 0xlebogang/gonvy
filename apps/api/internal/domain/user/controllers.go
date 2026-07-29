@@ -4,6 +4,7 @@ import "github.com/gin-gonic/gin"
 
 type Controller interface {
 	PostUser() gin.HandlerFunc
+	Authenticate() gin.HandlerFunc
 	GetAllUsers() gin.HandlerFunc
 	GetUserByID() gin.HandlerFunc
 	GetUserByEmail() gin.HandlerFunc
@@ -20,6 +21,10 @@ func NewController(s Service) Controller {
 }
 
 func (c *controller) PostUser() gin.HandlerFunc {
+	return func(c *gin.Context) {}
+}
+
+func (c *controller) Authenticate() gin.HandlerFunc {
 	return func(c *gin.Context) {}
 }
 

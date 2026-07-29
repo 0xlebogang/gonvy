@@ -19,6 +19,11 @@ type UserRequest struct {
 	Password string  `json:"password" binding:"required,min=6"`
 }
 
+type UserLoginRequest struct {
+	Email    string `json:"email" binding:"required,email,min=3,max=255"`
+	Password string `json:"password" binding:"required,min=6"`
+}
+
 type UserUpdateRequest struct {
 	PublicID *string `json:"ulid"`
 	Email    *string `json:"email" binding:"omitempty,email,min=3,max=255"`

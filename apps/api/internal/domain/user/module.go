@@ -1,6 +1,9 @@
 package user
 
-import "gorm.io/gorm"
+import (
+	"github.com/0xlebogang/gonvy/api/internal/password"
+	"gorm.io/gorm"
+)
 
 type Module struct {
 	controller Controller
@@ -11,8 +14,10 @@ func newModule(c Controller) *Module {
 }
 
 func BuildModule(db *gorm.DB) *Module {
+	passwordHandler := password.New()
+
 	repo := NewRepository(db)
-	service := NewService(repo)
+	service := NewService(repo, passwordHandler)
 	controller := NewController(service)
 	return newModule(controller)
 }
