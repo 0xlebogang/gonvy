@@ -8,6 +8,7 @@
     "start": "go run ./cmd/api/main.go",
     "test": "go test -v ./...",
     "lint": "golangci-lint run ./...",
-    "lint:fix": "golangci-lint run --fix ./..."
+    "lint:fix": "golangci-lint run --fix ./...",
+    "install": "go mod tidy"
   }
 }
