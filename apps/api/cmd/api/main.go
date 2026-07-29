@@ -22,6 +22,8 @@ func main() {
 		}
 	}()
 
+	dbStore.RunMigrations()
+
 	server := server.New(&conf.ServerConf, dbConn)
 	if err := server.Start(); err != nil {
 		log.Fatalf("Server startup failed: %v", err)

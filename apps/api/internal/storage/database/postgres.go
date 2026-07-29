@@ -3,6 +3,7 @@ package database
 import (
 	"fmt"
 
+	"github.com/0xlebogang/gonvy/api/internal/storage/migrations"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -13,6 +14,7 @@ type Config struct {
 
 type Database interface {
 	Connect() (*gorm.DB, error)
+	RunMigrations() error
 	Close() error
 }
 
@@ -32,7 +34,16 @@ func (d *database) Connect() (*gorm.DB, error) {
 		return nil, fmt.Errorf("Database connection already exist")
 	}
 	dialector := postgres.Open(d.conf.Dsn)
-	return gorm.Open(dialector, &gorm.Config{})
+	db, err := gorm.Open(dialector, &gorm.Config{})
+	if err != nil {
+		return nil, err
+	}
+	d.conn = db
+	return db, nil
+}
+
+func (d *database) RunMigrations() error {
+	return migrations.RunMigrations(d.conn)
 }
 
 func (d *database) Close() error {
