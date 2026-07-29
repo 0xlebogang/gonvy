@@ -1,0 +1,37 @@
+packages:
+  - 'apps/*'
+  - 'packages/*'
+allowBuilds:
+  '@carbon/colors': true
+  '@carbon/feature-flags': true
+  '@carbon/grid': true
+  '@carbon/icon-helpers': true
+  '@carbon/icons-react': true
+  '@carbon/layout': true
+  '@carbon/motion': true
+  '@carbon/react': true
+  '@carbon/styles': true
+  '@carbon/themes': true
+  '@carbon/type': true
+  '@carbon/utilities': true
+  '@ibm/plex': true
+  '@ibm/plex-mono': true
+  '@ibm/plex-sans': true
+  '@ibm/plex-sans-arabic': true
+  '@ibm/plex-sans-devanagari': true
+  '@ibm/plex-sans-hebrew': true
+  '@ibm/plex-sans-thai': true
+  '@ibm/plex-sans-thai-looped': true
+  '@ibm/plex-serif': true
+  '@parcel/watcher': true
+  sharp: true
+minimumReleaseAgeExclude:
+  - '@biomejs/biome@2.5.6'
+  - '@biomejs/cli-darwin-arm64@2.5.6'
+  - '@biomejs/cli-darwin-x64@2.5.6'
+  - '@biomejs/cli-linux-arm64-musl@2.5.6'
+  - '@biomejs/cli-linux-arm64@2.5.6'
+  - '@biomejs/cli-linux-x64-musl@2.5.6'
+  - '@biomejs/cli-linux-x64@2.5.6'
+  - '@biomejs/cli-win32-arm64@2.5.6'
+  - '@biomejs/cli-win32-x64@2.5.6'

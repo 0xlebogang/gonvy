@@ -1,0 +1,23 @@
+{
+	"$schema": "./node_modules/turbo/schema.json",
+	"tasks": {
+		"dev": {
+			"cache": false,
+			"persistent": true
+		},
+		"build": {
+			"dependsOn": ["^build"],
+			"inputs": [".env", ".env.local"],
+			"outputs": [".next/**"]
+		},
+		"test": {
+			"inputs": [".env.test"]
+		},
+		"start":{
+			"cache": false,
+			"persistent": true
+		},
+		"lint": {},
+		"lint:fix": {},
+	}
+}
