@@ -39,6 +39,7 @@ func (s *server) createHttpServer() *http.Server {
 }
 
 func (s *server) Start() error {
+	s.SetupRoutes()
 	svr := s.createHttpServer()
 	return svr.ListenAndServe()
 }
