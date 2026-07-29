@@ -22,7 +22,10 @@ func main() {
 		}
 	}()
 
-	dbStore.RunMigrations()
+	err = dbStore.RunMigrations()
+	if err != nil {
+		log.Fatalf("Database migration failed: %v", err)
+	}
 
 	server := server.New(&conf.ServerConf, dbConn)
 	if err := server.Start(); err != nil {
