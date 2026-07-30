@@ -7,11 +7,11 @@ import (
 )
 
 type Repository interface {
-	CreateUser(ctx context.Context, b *UserRequest) (*User, error)
+	CreateUser(ctx context.Context, u *User) (*User, error)
 	FindAllUsers(ctx context.Context) (*[]User, error)
 	FindUserByID(ctx context.Context, id string) (*User, error)
 	FindUserByEmail(ctx context.Context, email string) (*User, error)
-	UpdateUser(ctx context.Context, id string, b *UserUpdateRequest) (*User, error)
+	UpdateUser(ctx context.Context, id string, u *UserUpdateRequest) (*User, error)
 	DeleteUser(ctx context.Context, id string) error
 }
 
@@ -23,12 +23,11 @@ func NewRepository(db *gorm.DB) Repository {
 	return &repo{db: db}
 }
 
-func (r *repo) CreateUser(ctx context.Context, b *UserRequest) (*User, error) {
-	var u User
-	if err := r.db.WithContext(ctx).Model(&u).Create(b).Error; err != nil {
+func (r *repo) CreateUser(ctx context.Context, u *User) (*User, error) {
+	if err := r.db.WithContext(ctx).Create(u).Error; err != nil {
 		return nil, err
 	}
-	return &u, nil
+	return u, nil
 }
 
 func (r *repo) FindAllUsers(ctx context.Context) (*[]User, error) {

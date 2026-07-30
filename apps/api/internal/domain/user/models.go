@@ -1,22 +1,18 @@
 package user
 
 import (
+	"time"
+
+	"github.com/0xlebogang/gonvy/api/internal/common"
 	ulid "github.com/oklog/ulid/v2"
 	"gorm.io/gorm"
 )
 
 type User struct {
-	gorm.Model
-	PublicID string  `json:"ulid" gorm:"uniqueIndex;not null;size:26"`
-	Email    string  `json:"email" gorm:"uniqueIndex;varchar(255);not null"`
-	Name     *string `json:"name" gorm:"type:varchar(255)"`
-	Password string  `json:"password" gorm:"type:text;not null"`
-}
-
-type UserRequest struct {
-	Email    string  `json:"email" binding:"required,email,min=3,max=255"`
-	Name     *string `json:"name" binding:"omitempty,min=2,max=255"`
-	Password string  `json:"password" binding:"required,min=6"`
+	common.BaseModel
+	Email    string  `json:"email" gorm:"uniqueIndex;varchar(255);not null" binding:"required,email,min=3,max=255"`
+	Name     *string `json:"name" gorm:"type:varchar(255)" binding:"omitempty,min=2,max=255"`
+	Password string  `json:"password" gorm:"type:text;not null" binding:"required,min=6"`
 }
 
 type UserLoginRequest struct {
@@ -25,30 +21,26 @@ type UserLoginRequest struct {
 }
 
 type UserUpdateRequest struct {
-	PublicID *string `json:"ulid"`
 	Email    *string `json:"email" binding:"omitempty,email,min=3,max=255"`
 	Name     *string `json:"name" binding:"omitempty,min=2,max=255"`
 	Password *string `json:"password" binding:"omitempty,min=6"`
 }
 
 type UserResponse struct {
-	BaseModel gorm.Model
-	PublicID  string
-	Email     string
-	Name      *string
+	PublicID  string    `json:"id"`
+	Email     string    `json:"email"`
+	Name      *string   `json:"name"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 func (u *User) AsResponse() *UserResponse {
 	return &UserResponse{
-		BaseModel: gorm.Model{
-			ID:        u.Model.ID,
-			CreatedAt: u.Model.CreatedAt,
-			UpdatedAt: u.Model.UpdatedAt,
-			DeletedAt: u.Model.DeletedAt,
-		},
-		PublicID: u.PublicID,
-		Email:    u.Email,
-		Name:     u.Name,
+		PublicID:  u.PublicID,
+		Email:     u.Email,
+		Name:      u.Name,
+		CreatedAt: u.CreatedAt,
+		UpdatedAt: u.UpdatedAt,
 	}
 }
 
