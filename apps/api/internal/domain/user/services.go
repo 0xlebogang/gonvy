@@ -3,12 +3,11 @@ package user
 import (
 	"context"
 
-	"github.com/0xlebogang/gonvy/api/internal/password"
+	"github.com/0xlebogang/gonvy/api/internal/common"
 )
 
 type Service interface {
 	Register(ctx context.Context, b *User) (*UserResponse, error)
-	Authenticate(ctx context.Context, b *UserLoginRequest) error
 	FetchAllUsers(ctx context.Context) (*[]User, error)
 	FetchUserByID(ctx context.Context, id string) (*User, error)
 	FetchUserByEmail(ctx context.Context, email string) (*User, error)
@@ -17,16 +16,16 @@ type Service interface {
 }
 
 type service struct {
-	repo     Repository
-	password password.Password
+	repo   Repository
+	hasher common.Hasher
 }
 
-func NewService(r Repository, p password.Password) Service {
-	return &service{repo: r, password: p}
+func NewService(r Repository, h common.Hasher) Service {
+	return &service{repo: r, hasher: h}
 }
 
 func (s *service) Register(ctx context.Context, b *User) (*UserResponse, error) {
-	hashedPassword, err := s.password.Hash(b.Password)
+	hashedPassword, err := s.hasher.Hash(b.Password)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +45,7 @@ func (s *service) Authenticate(ctx context.Context, b *UserLoginRequest) error {
 	if err != nil {
 		return err
 	}
-	return s.password.Check(user.Password, b.Password)
+	return s.hasher.Check(user.Password, b.Password)
 }
 
 func (s *service) FetchAllUsers(ctx context.Context) (*[]User, error) {

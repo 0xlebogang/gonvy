@@ -1,7 +1,8 @@
-package user
+package auth
 
 import (
 	"github.com/0xlebogang/gonvy/api/internal/common"
+	"github.com/0xlebogang/gonvy/api/internal/domain/user"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
@@ -17,17 +18,16 @@ func newModule(c Controller) *Module {
 func BuildModule(db *gorm.DB) *Module {
 	hasher := common.NewHasher()
 
-	repo := NewRepository(db)
-	service := NewService(repo, hasher)
-	controller := NewController(service)
+	repo := user.NewRepository(db)
+
+	userSvc := user.NewService(repo, hasher)
+	controller := NewController(userSvc)
 	return newModule(controller)
 }
 
 func (m *Module) Register(r *gin.RouterGroup) {
-	user := r.Group("/users")
+	auth := r.Group("/auth")
 
-	user.GET("", m.controller.GetAllUsers())
-	user.GET("/:id", m.controller.GetUserByID())
-	user.PATCH("/:id", m.controller.PatchUser())
-	user.DELETE("/:id", m.controller.DeleteUser())
+	auth.POST("/register", m.controller.CreateUser())
+	auth.POST("/authenticate", m.controller.Login())
 }

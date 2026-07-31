@@ -1,19 +1,19 @@
-package password
+package common
 
 import "golang.org/x/crypto/bcrypt"
 
-type Password interface {
+type Hasher interface {
 	Hash(raw string) (string, error)
 	Check(hash, raw string) error
 }
 
-type password struct{}
+type hasher struct{}
 
-func New() Password {
-	return &password{}
+func NewHasher() Hasher {
+	return &hasher{}
 }
 
-func (p *password) Hash(raw string) (string, error) {
+func (h *hasher) Hash(raw string) (string, error) {
 	hashed, err := bcrypt.GenerateFromPassword([]byte(raw), bcrypt.DefaultCost)
 	if err != nil {
 		return "", err
@@ -21,6 +21,6 @@ func (p *password) Hash(raw string) (string, error) {
 	return string(hashed), nil
 }
 
-func (p *password) Check(hash, raw string) error {
+func (h *hasher) Check(hash, raw string) error {
 	return bcrypt.CompareHashAndPassword([]byte(hash), []byte(raw))
 }
