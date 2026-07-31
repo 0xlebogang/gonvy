@@ -15,7 +15,6 @@ type APIError struct {
 	Status  int       `json:"status"`
 	Code    ErrorCode `json:"code"`
 	Message string    `json:"message"`
-	Err     error     `json:"-"`
 }
 
 func (e *APIError) Error() string {
@@ -33,7 +32,6 @@ func FromError(err error) *APIError {
 			Status:  httpErr.HTTPStatus(),
 			Code:    httpErr.ErrorCode(),
 			Message: httpErr.Error(),
-			Err:     err,
 		}
 	}
 
@@ -41,6 +39,5 @@ func FromError(err error) *APIError {
 		Status:  http.StatusInternalServerError,
 		Code:    "INTERNAL_ERROR",
 		Message: "An unexpected error occured",
-		Err:     err,
 	}
 }

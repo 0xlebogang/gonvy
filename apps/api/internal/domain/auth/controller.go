@@ -1,11 +1,13 @@
 package auth
 
 import (
+	"errors"
 	"log"
 	"net/http"
 
 	"github.com/0xlebogang/gonvy/api/internal/domain/user"
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 type Controller interface {
@@ -26,15 +28,18 @@ func (c *controller) CreateUser() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var json user.User
 		if err := ctx.ShouldBind(&json); err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{
-				"error": "Invalid input",
-			})
+			_ = ctx.Error(ErrInvalidInput)
 			return
 		}
 
-		user, err := c.userSvc.CreateUser(ctx, &json)
+		user, err := c.userSvc.CreateUser(ctx.Request.Context(), &json)
 		if err != nil {
-			log.Printf("User registration failed: %v", err)
+			if errors.Is(err, gorm.ErrDuplicatedKey) {
+				ctx.JSON(http.StatusConflict, ErrEmailExists)
+				return
+			}
+
+			log.Printf("User registration failed: %v\n", err)
 			ctx.JSON(http.StatusInternalServerError, gin.H{
 				"error": "An Unexpected error occured",
 			})

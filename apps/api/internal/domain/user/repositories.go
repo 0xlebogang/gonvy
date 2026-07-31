@@ -3,6 +3,7 @@ package user
 import (
 	"context"
 
+	"github.com/0xlebogang/gonvy/api/internal/common"
 	"gorm.io/gorm"
 )
 
@@ -21,7 +22,7 @@ func NewRepository(db *gorm.DB) Repository {
 
 func (r *repository) CreateUser(ctx context.Context, u *User) (*User, error) {
 	if err := r.db.WithContext(ctx).Create(u).Error; err != nil {
-		return nil, err
+		return nil, common.IsDuplicateKey(err)
 	}
 	return u, nil
 }
