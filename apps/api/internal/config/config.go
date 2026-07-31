@@ -24,10 +24,10 @@ func Load() *EnvConfig {
 	_ = godotenv.Load()
 	return &EnvConfig{
 		ServerConf: server.Config{
-			Port: getEnv("PORT", "8080"),
+			Port: getEnv("GONVY__PORT", "8080"),
 		},
 		DatabaseConf: database.Config{
-			Dsn: getEnv("DSN", "postgresql://postgres:postgres@localhost:5432/postgres"),
+			Dsn: getEnv("GONVY__DSN", "postgresql://postgres:postgres@localhost:5432/postgres"),
 		},
 	}
 }
