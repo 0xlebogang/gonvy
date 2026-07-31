@@ -3,7 +3,6 @@ package database
 import (
 	"fmt"
 
-	"github.com/0xlebogang/gonvy/api/internal/storage/migrations"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -43,7 +42,7 @@ func (d *database) Connect() (*gorm.DB, error) {
 }
 
 func (d *database) RunMigrations() error {
-	return migrations.RunMigrations(d.conn)
+	return d.conn.AutoMigrate(tables...)
 }
 
 func (d *database) Close() error {
