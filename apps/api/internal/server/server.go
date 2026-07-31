@@ -4,13 +4,10 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/0xlebogang/gonvy/api/internal/config"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
-
-type Config struct {
-	Port string
-}
 
 type Server interface {
 	createHttpServer() *http.Server
@@ -18,12 +15,12 @@ type Server interface {
 }
 
 type server struct {
-	conf   *Config
+	conf   *config.EnvConfig
 	db     *gorm.DB
 	router *gin.Engine
 }
 
-func New(c *Config, db *gorm.DB) Server {
+func New(c *config.EnvConfig, db *gorm.DB) Server {
 	return &server{
 		conf:   c,
 		db:     db,

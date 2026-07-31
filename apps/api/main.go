@@ -11,7 +11,7 @@ import (
 func main() {
 	conf := config.Load()
 
-	dbStore := database.New(&conf.DatabaseConf)
+	dbStore := database.New(conf)
 	dbConn, err := dbStore.Connect()
 	if err != nil {
 		log.Fatalf("Database connection failed: %v", err)
@@ -27,7 +27,7 @@ func main() {
 		log.Fatalf("Database migration failed: %v", err)
 	}
 
-	server := server.New(&conf.ServerConf, dbConn)
+	server := server.New(conf, dbConn)
 	if err := server.Start(); err != nil {
 		log.Fatalf("Server startup failed: %v", err)
 	}

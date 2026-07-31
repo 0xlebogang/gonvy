@@ -3,13 +3,10 @@ package database
 import (
 	"fmt"
 
+	"github.com/0xlebogang/gonvy/api/internal/config"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
-
-type Config struct {
-	Dsn string
-}
 
 type Database interface {
 	Connect() (*gorm.DB, error)
@@ -18,11 +15,11 @@ type Database interface {
 }
 
 type database struct {
-	conf *Config
+	conf *config.EnvConfig
 	conn *gorm.DB
 }
 
-func New(c *Config) Database {
+func New(c *config.EnvConfig) Database {
 	return &database{
 		conf: c,
 	}
