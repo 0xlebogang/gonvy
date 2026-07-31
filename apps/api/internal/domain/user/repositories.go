@@ -11,22 +11,22 @@ type Repository interface {
 	FindUserByEmail(ctx context.Context, email string) (*User, error)
 }
 
-type repo struct {
+type repository struct {
 	db *gorm.DB
 }
 
 func NewRepository(db *gorm.DB) Repository {
-	return &repo{db: db}
+	return &repository{db: db}
 }
 
-func (r *repo) CreateUser(ctx context.Context, u *User) (*User, error) {
+func (r *repository) CreateUser(ctx context.Context, u *User) (*User, error) {
 	if err := r.db.WithContext(ctx).Create(u).Error; err != nil {
 		return nil, err
 	}
 	return u, nil
 }
 
-func (r *repo) FindUserByEmail(ctx context.Context, email string) (*User, error) {
+func (r *repository) FindUserByEmail(ctx context.Context, email string) (*User, error) {
 	var u User
 	if err := r.db.WithContext(ctx).Where("email = ?", email).First(&u).Error; err != nil {
 		return nil, err

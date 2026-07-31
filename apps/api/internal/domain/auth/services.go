@@ -10,16 +10,16 @@ type Service interface {
 	Authenticate(ctx context.Context, u *UserLogin) (*Tokens, error)
 }
 
-type svc struct {
+type service struct {
 	repo  user.Repository
 	token Token
 }
 
-func NewSvc(r user.Repository, t Token) Service {
-	return &svc{repo: r, token: t}
+func NewService(r user.Repository, t Token) Service {
+	return &service{repo: r, token: t}
 }
 
-func (s *svc) Authenticate(ctx context.Context, u *UserLogin) (*Tokens, error) {
+func (s *service) Authenticate(ctx context.Context, u *UserLogin) (*Tokens, error) {
 	user, err := s.repo.FindUserByEmail(ctx, u.Email)
 	if err != nil {
 		return nil, err

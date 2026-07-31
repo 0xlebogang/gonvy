@@ -15,11 +15,6 @@ type User struct {
 	Password string `json:"password" gorm:"type:text;not null" binding:"required,min=6"`
 }
 
-type UserLoginRequest struct {
-	Email    string `json:"email" binding:"required,email,min=3,max=255"`
-	Password string `json:"password" binding:"required,min=6"`
-}
-
 type UserUpdateRequest struct {
 	Email    *string `json:"email" binding:"omitempty,email,min=3,max=255"`
 	Name     *string `json:"name" binding:"omitempty,min=2,max=255"`

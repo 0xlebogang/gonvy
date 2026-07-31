@@ -23,7 +23,7 @@ func BuildModule(c *config.EnvConfig, db *gorm.DB) *Module {
 	repo := user.NewRepository(db)
 
 	userSvc := user.NewService(repo, hasher)
-	authSvc := NewSvc(repo, token)
+	authSvc := NewService(repo, token)
 
 	controller := NewController(userSvc, authSvc)
 	return newModule(controller)
