@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/0xlebogang/gonvy/api/internal/config"
+	"github.com/0xlebogang/gonvy/api/internal/middleware"
 	"github.com/0xlebogang/gonvy/api/internal/server"
 	"github.com/0xlebogang/gonvy/api/internal/storage/database"
 )
@@ -27,7 +28,9 @@ func main() {
 		log.Fatalf("Database migration failed: %v", err)
 	}
 
-	server := server.New(conf, dbConn)
+	mddlwr := middleware.New()
+
+	server := server.New(conf, dbConn, mddlwr)
 	if err := server.Start(); err != nil {
 		log.Fatalf("Server startup failed: %v", err)
 	}
