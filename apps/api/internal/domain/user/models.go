@@ -10,9 +10,9 @@ import (
 
 type User struct {
 	common.BaseModel
-	Email    string  `json:"email" gorm:"uniqueIndex;varchar(255);not null" binding:"required,email,min=3,max=255"`
-	Name     *string `json:"name" gorm:"type:varchar(255)" binding:"omitempty,min=2,max=255"`
-	Password string  `json:"password" gorm:"type:text;not null" binding:"required,min=6"`
+	Email    string `json:"email" gorm:"uniqueIndex;varchar(255);not null" binding:"required,email,min=3,max=255"`
+	Name     string `json:"name" gorm:"type:varchar(255);default=''" binding:"omitempty,min=2,max=255"`
+	Password string `json:"password" gorm:"type:text;not null" binding:"required,min=6"`
 }
 
 type UserLoginRequest struct {
@@ -29,7 +29,7 @@ type UserUpdateRequest struct {
 type UserResponse struct {
 	PublicID  string    `json:"id"`
 	Email     string    `json:"email"`
-	Name      *string   `json:"name"`
+	Name      string    `json:"name"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }

@@ -8,11 +8,6 @@ import (
 
 type Service interface {
 	CreateUser(ctx context.Context, b *User) (*UserResponse, error)
-	FetchAllUsers(ctx context.Context) (*[]User, error)
-	FetchUserByID(ctx context.Context, id string) (*User, error)
-	FetchUserByEmail(ctx context.Context, email string) (*User, error)
-	ModifyUser(ctx context.Context, id string, b *UserUpdateRequest) (*User, error)
-	RemoveUser(ctx context.Context, id string) error
 }
 
 type service struct {
@@ -38,24 +33,4 @@ func (s *service) CreateUser(ctx context.Context, b *User) (*UserResponse, error
 	}
 
 	return user.AsResponse(), nil
-}
-
-func (s *service) FetchAllUsers(ctx context.Context) (*[]User, error) {
-	return s.repo.FindAllUsers(ctx)
-}
-
-func (s *service) FetchUserByID(ctx context.Context, id string) (*User, error) {
-	return s.repo.FindUserByID(ctx, id)
-}
-
-func (s *service) FetchUserByEmail(ctx context.Context, email string) (*User, error) {
-	return s.repo.FindUserByEmail(ctx, email)
-}
-
-func (s *service) ModifyUser(ctx context.Context, id string, b *UserUpdateRequest) (*User, error) {
-	return s.repo.UpdateUser(ctx, id, b)
-}
-
-func (s *service) RemoveUser(ctx context.Context, id string) error {
-	return s.repo.DeleteUser(ctx, id)
 }

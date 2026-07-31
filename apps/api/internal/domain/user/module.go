@@ -24,10 +24,4 @@ func BuildModule(db *gorm.DB) *Module {
 }
 
 func (m *Module) Register(r *gin.RouterGroup) {
-	user := r.Group("/users")
-
-	user.GET("", m.controller.GetAllUsers())
-	user.GET("/:id", m.controller.GetUserByID())
-	user.PATCH("/:id", m.controller.PatchUser())
-	user.DELETE("/:id", m.controller.DeleteUser())
 }

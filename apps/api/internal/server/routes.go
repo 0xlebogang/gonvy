@@ -2,7 +2,6 @@ package server
 
 import (
 	"github.com/0xlebogang/gonvy/api/internal/domain/auth"
-	"github.com/0xlebogang/gonvy/api/internal/domain/user"
 )
 
 func (s *server) SetupRoutes() {
@@ -11,7 +10,4 @@ func (s *server) SetupRoutes() {
 
 	authModule := auth.BuildModule(s.db)
 	authModule.Register(v1)
-
-	userModule := user.BuildModule(s.db)
-	userModule.Register(v1)
 }
