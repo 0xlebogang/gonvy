@@ -7,7 +7,7 @@ import (
 )
 
 type Service interface {
-	Register(ctx context.Context, b *User) (*UserResponse, error)
+	CreateUser(ctx context.Context, b *User) (*UserResponse, error)
 	FetchAllUsers(ctx context.Context) (*[]User, error)
 	FetchUserByID(ctx context.Context, id string) (*User, error)
 	FetchUserByEmail(ctx context.Context, email string) (*User, error)
@@ -24,7 +24,7 @@ func NewService(r Repository, h common.Hasher) Service {
 	return &service{repo: r, hasher: h}
 }
 
-func (s *service) Register(ctx context.Context, b *User) (*UserResponse, error) {
+func (s *service) CreateUser(ctx context.Context, b *User) (*UserResponse, error) {
 	hashedPassword, err := s.hasher.Hash(b.Password)
 	if err != nil {
 		return nil, err
@@ -38,14 +38,6 @@ func (s *service) Register(ctx context.Context, b *User) (*UserResponse, error) 
 	}
 
 	return user.AsResponse(), nil
-}
-
-func (s *service) Authenticate(ctx context.Context, b *UserLoginRequest) error {
-	user, err := s.repo.FindUserByEmail(ctx, b.Email)
-	if err != nil {
-		return err
-	}
-	return s.hasher.Check(user.Password, b.Password)
 }
 
 func (s *service) FetchAllUsers(ctx context.Context) (*[]User, error) {
