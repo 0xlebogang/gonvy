@@ -10,7 +10,6 @@ import (
 )
 
 type Server interface {
-	createHttpServer() *http.Server
 	Start() error
 }
 
