@@ -8,6 +8,7 @@ import (
 
 type Service interface {
 	CreateUser(ctx context.Context, b *User) (*UserResponse, error)
+	FindUserByEmail(ctx context.Context, email string) (*User, error)
 }
 
 type service struct {
@@ -33,4 +34,8 @@ func (s *service) CreateUser(ctx context.Context, b *User) (*UserResponse, error
 	}
 
 	return user.AsResponse(), nil
+}
+
+func (s *service) FindUserByEmail(ctx context.Context, email string) (*User, error) {
+	return s.repo.FindUserByEmail(ctx, email)
 }

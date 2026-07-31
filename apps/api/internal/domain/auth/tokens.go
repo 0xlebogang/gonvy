@@ -4,15 +4,9 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/0xlebogang/gonvy/api/internal/config"
 	jwt "github.com/golang-jwt/jwt/v5"
 )
-
-type Config struct {
-	AppName              string
-	JWTSecret            string
-	AccessTokenLifespan  string
-	RefreshTokenLifespan string
-}
 
 type CustomClaims struct {
 	UserID string
@@ -27,10 +21,10 @@ type Token interface {
 }
 
 type token struct {
-	conf *Config
+	conf *config.EnvConfig
 }
 
-func NewToken(c *Config) Token {
+func NewToken(c *config.EnvConfig) Token {
 	return &token{conf: c}
 }
 
