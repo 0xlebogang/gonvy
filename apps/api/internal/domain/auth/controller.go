@@ -35,14 +35,10 @@ func (c *controller) CreateUser() gin.HandlerFunc {
 		user, err := c.userSvc.CreateUser(ctx.Request.Context(), &json)
 		if err != nil {
 			if errors.Is(err, gorm.ErrDuplicatedKey) {
-				ctx.JSON(http.StatusConflict, ErrEmailExists)
+				_ = ctx.Error(ErrEmailExists)
 				return
 			}
-
-			log.Printf("User registration failed: %v\n", err)
-			ctx.JSON(http.StatusInternalServerError, gin.H{
-				"error": "An Unexpected error occured",
-			})
+			_ = ctx.Error(err)
 			return
 		}
 

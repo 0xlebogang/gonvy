@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/0xlebogang/gonvy/api/internal/httperr"
@@ -10,10 +11,15 @@ type AuthError struct {
 	Status  int
 	Code    httperr.ErrorCode
 	Message string
+	Err     error
 }
 
 func (e *AuthError) Error() string {
 	return e.Message
+}
+
+func (e *AuthError) Log() {
+	log.Printf("[%s]: %v\n", e.Code, e.Err)
 }
 
 func (e *AuthError) HTTPStatus() int {
