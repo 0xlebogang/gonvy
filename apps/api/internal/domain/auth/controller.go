@@ -65,6 +65,8 @@ func (c *controller) Login() gin.HandlerFunc {
 			return
 		}
 
+		setTokenCookies(ctx, tokens.AccessToken, tokens.RefreshToken)
+
 		ctx.JSON(http.StatusOK, tokens)
 	}
 }
