@@ -2,6 +2,7 @@ package httperr
 
 import (
 	"errors"
+	"log"
 	"net/http"
 )
 
@@ -21,6 +22,10 @@ type APIError struct {
 
 func (e *APIError) Error() string {
 	return e.Message
+}
+
+func (e *APIError) Log() {
+	log.Printf("[%s]: %v\n", e.Code, e.Err)
 }
 
 func FromError(err error) *APIError {

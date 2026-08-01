@@ -3,6 +3,7 @@ package auth
 import (
 	"context"
 
+	"github.com/0xlebogang/gonvy/api/internal/common"
 	"github.com/0xlebogang/gonvy/api/internal/domain/user"
 )
 
@@ -11,17 +12,22 @@ type Service interface {
 }
 
 type service struct {
-	repo  user.Repository
-	token Token
+	repo   user.Repository
+	hasher common.Hasher
+	token  Token
 }
 
-func NewService(r user.Repository, t Token) Service {
-	return &service{repo: r, token: t}
+func NewService(r user.Repository, h common.Hasher, t Token) Service {
+	return &service{repo: r, hasher: h, token: t}
 }
 
 func (s *service) Authenticate(ctx context.Context, u *UserLogin) (*Tokens, error) {
 	user, err := s.repo.FindUserByEmail(ctx, u.Email)
 	if err != nil {
+		return nil, err
+	}
+
+	if err := s.hasher.Check(user.Password, u.Password); err != nil {
 		return nil, err
 	}
 

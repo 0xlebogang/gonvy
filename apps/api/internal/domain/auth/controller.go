@@ -2,11 +2,11 @@ package auth
 
 import (
 	"errors"
-	"log"
 	"net/http"
 
 	"github.com/0xlebogang/gonvy/api/internal/domain/user"
 	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
@@ -41,7 +41,6 @@ func (c *controller) CreateUser() gin.HandlerFunc {
 			_ = ctx.Error(err)
 			return
 		}
-
 		ctx.JSON(http.StatusCreated, gin.H{
 			"user": user,
 		})
@@ -52,18 +51,17 @@ func (c *controller) Login() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var json UserLogin
 		if err := ctx.ShouldBind(&json); err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{
-				"error": "invalid input",
-			})
+			_ = ctx.Error(ErrInvalidInput)
 			return
 		}
 
 		tokens, err := c.authSvc.Authenticate(ctx.Request.Context(), &json)
 		if err != nil {
-			log.Printf("User registration failed: %v\n", err)
-			ctx.JSON(http.StatusInternalServerError, gin.H{
-				"error": "An unexpected error occured",
-			})
+			if errors.Is(err, bcrypt.ErrMismatchedHashAndPassword) || errors.Is(err, gorm.ErrRecordNotFound) {
+				_ = ctx.Error(ErrInvalidCredentials)
+				return
+			}
+			_ = ctx.Error(err)
 			return
 		}
 
