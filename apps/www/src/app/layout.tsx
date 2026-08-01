@@ -12,7 +12,7 @@ export default function RootLayout(props: RootLayoutProps) {
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body>
-				<AppShell path={""}>
+				<AppShell>
 					{props.children}
 					<Footer />
 				</AppShell>
