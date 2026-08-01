@@ -3,7 +3,7 @@ import { Button } from "@repo/ui/index";
 export default function Index() {
 	return (
 		<main>
-			<h1>Hello from Nextjs</h1>
+			<h4>Hello from Nextjs</h4>
 			<Button>Click Me!</Button>
 		</main>
 	)
