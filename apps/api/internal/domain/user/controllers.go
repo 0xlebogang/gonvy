@@ -29,7 +29,7 @@ func (c *controller) PostUser() gin.HandlerFunc {
 			return
 		}
 
-		user, err := c.service.CreateUser(ctx, &json)
+		user, err := c.service.CreateUser(ctx.Request.Context(), &json)
 		if err != nil {
 			log.Printf("User registration failed: %v", err)
 			ctx.JSON(http.StatusInternalServerError, gin.H{

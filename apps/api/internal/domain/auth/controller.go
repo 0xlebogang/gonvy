@@ -58,7 +58,7 @@ func (c *controller) Login() gin.HandlerFunc {
 			return
 		}
 
-		tokens, err := c.authSvc.Authenticate(ctx, &json)
+		tokens, err := c.authSvc.Authenticate(ctx.Request.Context(), &json)
 		if err != nil {
 			log.Printf("User registration failed: %v\n", err)
 			ctx.JSON(http.StatusInternalServerError, gin.H{
