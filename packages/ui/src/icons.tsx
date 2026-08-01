@@ -1,1 +1,1 @@
-export * from '@carbon/react/icons'
+export * from "@carbon/react/icons";

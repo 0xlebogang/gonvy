@@ -1,33 +1,33 @@
 {
-  "name": "@repo/ui",
-  "version": "0.0.0",
-  "private": true,
-  "exports": {
-    ".": "./src/index.tsx",
-    "./icons": "./src/icons.tsx",
-    "./components/*": "./src/components/*",
-    "./styles/*": "./src/styles/*"
-  },
-  "scripts": {
-    "test": "vitest run",
-    "lint": "biome check",
-    "lint:fix": "biome check --write --unsafe"
-  },
-  "devDependencies": {
-    "@repo/biome": "workspace:*",
-    "@repo/tsconfig": "workspace:*",
-    "@repo/vitest": "workspace:*",
-    "@types/node": "^26.1.2",
-    "@types/react": "^19.2.17",
-    "@types/react-dom": "^19.2.3",
-    "typescript": "6.0.3"
-  },
-  "peerDependencies": {
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8",
-    "sass": "^1.102.0"
-  },
-  "dependencies": {
-    "@carbon/react": "^1.112.0"
-  }
+	"name": "@repo/ui",
+	"version": "0.0.0",
+	"private": true,
+	"exports": {
+		".": "./src/index.tsx",
+		"./icons": "./src/icons.tsx",
+		"./components/*": "./src/components/*",
+		"./styles/*": "./src/styles/*"
+	},
+	"scripts": {
+		"test": "vitest run",
+		"lint": "biome check",
+		"lint:fix": "biome check --write --unsafe"
+	},
+	"devDependencies": {
+		"@repo/biome": "workspace:*",
+		"@repo/tsconfig": "workspace:*",
+		"@repo/vitest": "workspace:*",
+		"@types/node": "^26.1.2",
+		"@types/react": "^19.2.17",
+		"@types/react-dom": "^19.2.3",
+		"typescript": "6.0.3"
+	},
+	"peerDependencies": {
+		"react": "^19.2.8",
+		"react-dom": "^19.2.8",
+		"sass": "^1.102.0"
+	},
+	"dependencies": {
+		"@carbon/react": "^1.112.0"
+	}
 }

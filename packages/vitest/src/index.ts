@@ -1,15 +1,15 @@
 export const sharedConfig = {
-  test: {
-    globals: true,
-    reporters: ["default", "blob"],
-    outputFile: {
-      blob: "coverage/blob/report.json",
-    },
-    coverage: {
-      provider: "istanbul" as const,
-      enabled: true,
-    },
-  },
+	test: {
+		globals: true,
+		reporters: ["default", "blob"],
+		outputFile: {
+			blob: "coverage/blob/report.json",
+		},
+		coverage: {
+			provider: "istanbul" as const,
+			enabled: true,
+		},
+	},
 };
 
 // Re-export specific configs for backwards compatibility

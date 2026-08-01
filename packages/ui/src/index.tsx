@@ -1,1 +1,1 @@
-export * from '@carbon/react'
+export * from "@carbon/react";

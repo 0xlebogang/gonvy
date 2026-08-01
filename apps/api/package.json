@@ -1,14 +1,14 @@
 {
-  "name": "api",
-  "version": "0.0.0",
-  "private": true,
-  "scripts": {
-    "dev": "air",
-    "build": "go build -o dist/bin ./cmd/main.go",
-    "start": "go run ./cmd/api/main.go",
-    "test": "go test -v ./...",
-    "lint": "golangci-lint run ./...",
-    "lint:fix": "golangci-lint run --fix ./...",
-    "install": "go mod tidy"
-  }
+	"name": "api",
+	"version": "0.0.0",
+	"private": true,
+	"scripts": {
+		"dev": "air",
+		"build": "go build -o dist/bin ./cmd/main.go",
+		"start": "go run ./cmd/api/main.go",
+		"test": "go test -v ./...",
+		"lint": "golangci-lint run ./...",
+		"lint:fix": "golangci-lint run --fix ./...",
+		"install": "go mod tidy"
+	}
 }

@@ -13,11 +13,11 @@
 		"test": {
 			"inputs": [".env.test"]
 		},
-		"start":{
+		"start": {
 			"cache": false,
 			"persistent": true
 		},
 		"lint": {},
-		"lint:fix": {},
+		"lint:fix": {}
 	}
 }

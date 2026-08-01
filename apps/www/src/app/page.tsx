@@ -6,5 +6,5 @@ export default function Index() {
 			<h4>Hello from Nextjs</h4>
 			<Button>Click Me!</Button>
 		</main>
-	)
+	);
 }
