@@ -1,0 +1,21 @@
+{
+  "baseBranch": "trunk",
+  "access": "public",
+  "format": "auto",
+  "changelog": [
+    "@changesets/changelog-github",
+    {
+      "repo": "repo"
+    }
+  ],
+  "commit": true,
+  "ignore": [
+    "@repo/tsconfig",
+    "@repo/ui"
+  ],
+  "fixed": [
+    ["web", "api"]
+  ],
+  "linked": [],
+  "updateInternalDependencies": "patch"
+}
