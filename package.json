@@ -1,22 +1,13 @@
 {
-	"name": "gonvy",
-	"version": "0.0.0",
-	"license": "AGPL-3.0",
-	"scripts": {
-		"dev": "turbo dev",
-		"build": "turbo build",
-		"test": "turbo test",
-		"start": "turbo start",
-		"lint": "turbo lint",
-		"lint:fix": "turbo lint:fix"
-	},
-	"devDependencies": {
-		"@biomejs/biome": "^2.5.6",
-		"@repo/biome": "workspace:*",
-		"@types/bun": "latest",
-		"@types/node": "^26.1.2",
-		"turbo": "^2.10.7",
-		"typescript": "6.0.3"
-	},
-	"packageManager": "pnpm@11.10.0"
+  "name": "gonvy",
+  "version": "0.0.0",
+  "license": "AGPL-3.0-only",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "turbo": "^2.10.9",
+    "typescript": "catalog:"
+  }
 }

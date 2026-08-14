@@ -5,9 +5,7 @@ import (
 	"net/http"
 
 	"github.com/0xlebogang/gonvy/api/internal/config"
-	"github.com/0xlebogang/gonvy/api/internal/middleware"
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 )
 
 type Server interface {
@@ -15,19 +13,20 @@ type Server interface {
 }
 
 type server struct {
-	conf       *config.EnvConfig
-	db         *gorm.DB
-	middleware middleware.Middleware
-	router     *gin.Engine
+	conf   *config.Config
+	router *gin.Engine
 }
 
-func New(c *config.EnvConfig, db *gorm.DB, m middleware.Middleware) Server {
+func New(c *config.Config) Server {
 	return &server{
-		conf:       c,
-		db:         db,
-		middleware: m,
-		router:     gin.Default(),
+		conf:   c,
+		router: gin.Default(),
 	}
+}
+
+func (s *server) Start() error {
+	server := s.createHttpServer()
+	return server.ListenAndServe()
 }
 
 func (s *server) createHttpServer() *http.Server {
@@ -35,13 +34,4 @@ func (s *server) createHttpServer() *http.Server {
 		Addr:    fmt.Sprintf(":%s", s.conf.Port),
 		Handler: s.router.Handler(),
 	}
-}
-
-func (s *server) Start() error {
-	api := s.router.Group("/api")
-	api.Use(s.middleware.ErrorHandling())
-
-	s.SetupV1Routes(api)
-	svr := s.createHttpServer()
-	return svr.ListenAndServe()
 }
