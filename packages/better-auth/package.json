@@ -10,11 +10,13 @@
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
+    "@types/node": "catalog:",
     "@types/pg": "^8.23.1",
-    "@workspace/typescript-config": "*"
+    "@workspace/typescript-config": "*",
+    "typescript": "catalog:"
   },
   "dependencies": {
-    "better-auth": "^1.7.5",
+    "better-auth": "catalog:",
     "kysely": "^0.29.5",
     "pg": "^8.23.0"
   }
