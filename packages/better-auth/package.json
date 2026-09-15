@@ -2,6 +2,9 @@
   "name": "@workspace/better-auth",
   "version": "0.0.0",
   "private": true,
+  "exports": {
+    "./server": "./src/server.ts"
+  },
   "scripts": {
     "make:migrations": "bunx auth@latest generate --config ./src/server.ts -y",
     "migrate": "bunx auth@latest migrate --config ./src/server.ts -y",
@@ -10,6 +13,7 @@
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
+    "@t3-oss/env-core": "catalog:",
     "@types/node": "catalog:",
     "@types/pg": "^8.23.1",
     "@workspace/typescript-config": "*",

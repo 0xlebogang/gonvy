@@ -10,6 +10,8 @@
 		"typescript": "catalog:"
 	},
 	"catalog": {
+		"@t3-oss/env-core": "^0.13.11",
+		"@t3-oss/env-nextjs": "^0.13.11",
 		"@types/node": "^26.6.0",
 		"@types/react": "^19.3.0",
 		"@types/react-dom": "^19.3.0",
