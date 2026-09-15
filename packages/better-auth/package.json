@@ -1,0 +1,21 @@
+{
+  "name": "@workspace/better-auth",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "make:migrations": "bunx auth@latest generate --config ./src/server.ts -y",
+    "migrate": "bunx auth@latest migrate --config ./src/server.ts -y",
+    "lint": "biome check",
+    "lint:fix": "biome check --fix --unsafe",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.23.1",
+    "@workspace/typescript-config": "*"
+  },
+  "dependencies": {
+    "better-auth": "^1.7.5",
+    "kysely": "^0.29.5",
+    "pg": "^8.23.0"
+  }
+}
