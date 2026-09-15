@@ -3,7 +3,8 @@
 	"version": "0.0.0",
 	"private": true,
 	"exports": {
-		"./server": "./src/server.ts"
+		"./server": "./src/server.ts",
+		"./client": "./src/client.ts"
 	},
 	"scripts": {
 		"make:migrations": "bunx auth@latest generate --config ./src/server.ts -y",
