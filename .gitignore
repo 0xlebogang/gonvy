@@ -37,6 +37,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 
 # vercel
 .vercel
@@ -73,9 +74,6 @@ profile.cov
 # Go workspace file
 go.work
 go.work.sum
-
-# env file
-.env
 
 # Air
 tmp/
