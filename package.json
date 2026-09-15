@@ -6,6 +6,8 @@
 		"@types/node": "catalog:",
 		"@workspace/typescript-config": "workspace:*",
 		"dotenv-cli": "^11.0.0",
+		"husky": "^9.1.7",
+		"lint-staged": "^17.5.1",
 		"turbo": "^2.9.18",
 		"typescript": "catalog:"
 	},
@@ -33,7 +35,8 @@
 		"dev": "turbo dev",
 		"lint": "turbo lint",
 		"format": "turbo format",
-		"typecheck": "turbo typecheck"
+		"typecheck": "turbo typecheck",
+		"prepare": "husky"
 	},
 	"workspaces": [
 		"apps/*",

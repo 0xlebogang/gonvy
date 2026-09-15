@@ -1,20 +1,20 @@
 {
-  "name": "@workspace/env",
-  "version": "0.0.0",
-  "private": true,
-  "exports": {
-    "./server": "./src/server.ts",
-    "./client": "./src/client.ts"
-  },
-  "scripts": {
-    "lint": "biome check",
-    "lint:fix": "biome check --fix --unsafe"
-  },
-  "devDependencies": {
-    "@workspace/typescript-config": "*"
-  },
-  "dependencies": {
-    "@t3-oss/env-core": "catalog:",
-    "zod": "catalog:"
-  }
+	"name": "@workspace/env",
+	"version": "0.0.0",
+	"private": true,
+	"exports": {
+		"./server": "./src/server.ts",
+		"./client": "./src/client.ts"
+	},
+	"scripts": {
+		"lint": "biome check",
+		"lint:fix": "biome check --fix --unsafe"
+	},
+	"devDependencies": {
+		"@workspace/typescript-config": "*"
+	},
+	"dependencies": {
+		"@t3-oss/env-core": "catalog:",
+		"zod": "catalog:"
+	}
 }

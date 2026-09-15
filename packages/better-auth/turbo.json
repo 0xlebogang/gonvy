@@ -1,14 +1,19 @@
 {
-  "$schema": "../../node_modules/turbo/schema.json",
-  "extends": ["//"],
-  "tasks": {
-    "make:migrations": {
-      "inputs": ["./src/server.ts", "./better-auth_migrations", ".env*", "!.env.example"],
-      "outputs": ["./better-auth_migrations"],
-    },
-    "migrate": {
-      "dependsOn": ["make:migrations"],
-      "outputs": ["./better-auth_migrations"]
-    }
-  }
+	"$schema": "../../node_modules/turbo/schema.json",
+	"extends": ["//"],
+	"tasks": {
+		"make:migrations": {
+			"inputs": [
+				"./src/server.ts",
+				"./better-auth_migrations",
+				".env*",
+				"!.env.example"
+			],
+			"outputs": ["./better-auth_migrations"]
+		},
+		"migrate": {
+			"dependsOn": ["make:migrations"],
+			"inputs": ["./better-auth_migrations", ".env*", "!.env.example"]
+		}
+	}
 }

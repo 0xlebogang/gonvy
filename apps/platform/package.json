@@ -12,8 +12,8 @@
 		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {
-    "@t3-oss/env-nextjs": "catalog:",
-    "@workspace/env": "*",
+		"@t3-oss/env-nextjs": "catalog:",
+		"@workspace/env": "*",
 		"@workspace/ui": "workspace:*",
 		"lucide-react": "catalog:",
 		"next": "catalog:",
