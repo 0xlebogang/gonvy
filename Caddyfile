@@ -1,0 +1,15 @@
+gonvy.localhost {
+	reverse_proxy localhost:3000
+}
+
+app.gonvy.localhost {
+	reverse_proxy localhost:3000
+}
+
+auth.gonvy.localhost {
+	reverse_proxy localhost:5000
+}
+
+api.gonvy.localhost {
+	reverse_proxy localhost:8000
+}
