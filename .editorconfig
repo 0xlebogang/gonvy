@@ -13,5 +13,5 @@ insert_final_newline = true
 tab_width = 4
 indent_size = 4
 
-[*.{json,jsonc,yml,toml}]
+[*.{json,jsonc,yml,yaml,toml}]
 indent_style = space
