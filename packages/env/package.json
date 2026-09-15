@@ -14,6 +14,7 @@
     "@workspace/typescript-config": "*"
   },
   "dependencies": {
-    "@t3-oss/env-core": "catalog:"
+    "@t3-oss/env-core": "catalog:",
+    "zod": "catalog:"
   }
 }

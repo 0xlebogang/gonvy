@@ -13,15 +13,17 @@
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "@t3-oss/env-core": "catalog:",
     "@types/node": "catalog:",
     "@types/pg": "^8.23.1",
     "@workspace/typescript-config": "*",
     "typescript": "catalog:"
   },
   "dependencies": {
+    "@t3-oss/env-core": "catalog:",
+    "@workspace/env": "*",
     "better-auth": "catalog:",
     "kysely": "^0.29.5",
-    "pg": "^8.23.0"
+    "pg": "^8.23.0",
+    "zod": "catalog:"
   }
 }
