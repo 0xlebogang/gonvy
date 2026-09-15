@@ -11,6 +11,7 @@
 		"lint:fix": "biome check --fix --unsafe"
 	},
 	"devDependencies": {
+		"@types/node": "catalog:",
 		"@workspace/typescript-config": "*"
 	},
 	"dependencies": {
