@@ -20,6 +20,7 @@ import {
 	SidebarMenuItem,
 	useSidebar,
 } from "@workspace/ui/components/sidebar";
+import { toast } from "@workspace/ui/components/toast";
 import {
 	ChevronsUpDownIcon,
 	LogOutIcon,
@@ -28,15 +29,17 @@ import {
 	User,
 } from "lucide-react";
 import Link from "next/link";
-import { useSession } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
+import { signOut, useSession } from "@/lib/auth-client";
 
 export function NavUser() {
 	const { isMobile } = useSidebar();
+	const router = useRouter();
 
 	const { data: session } = useSession.get();
 	const user = session?.user;
 
-	const fallbackInitials = user?.name
+	const initials = user?.name
 		? user.name
 				.split(" ")
 				.map((name) => name[0])
@@ -44,6 +47,34 @@ export function NavUser() {
 				.toUpperCase()
 				.slice(0, 2)
 		: "GU";
+
+	async function handleSignOut() {
+		try {
+			const { error } = await signOut();
+
+			if (error) {
+				toast.add({
+					title: error.code,
+					description: error.message,
+				});
+
+				return;
+			}
+
+			router.push("/");
+			router.refresh();
+		} catch (err) {
+			console.error(err);
+
+			toast.add({
+				title: "Unexpected error occured",
+				description:
+					"An unexpected error occured while trying to sign you out. Please try again",
+			});
+
+			return;
+		}
+	}
 
 	return (
 		<SidebarMenu>
@@ -56,7 +87,7 @@ export function NavUser() {
 					>
 						<Avatar>
 							<AvatarImage src={user?.image as string} alt={"user"} />
-							<AvatarFallback>{fallbackInitials}</AvatarFallback>
+							<AvatarFallback>{initials}</AvatarFallback>
 						</Avatar>
 						<div className="grid flex-1 text-left text-sm leading-tight">
 							{user?.name && (
@@ -77,7 +108,7 @@ export function NavUser() {
 								<div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
 									<Avatar>
 										<AvatarImage src={"user.avatar"} alt={"user.name"} />
-										<AvatarFallback>CN</AvatarFallback>
+										<AvatarFallback>{initials}</AvatarFallback>
 									</Avatar>
 									<div className="grid flex-1 text-left text-sm leading-tight">
 										<span className="truncate font-medium">{user?.name}</span>
@@ -92,17 +123,17 @@ export function NavUser() {
 								<User />
 								Profile
 							</DropdownMenuItem>
-							<DropdownMenuItem>
+							<DropdownMenuItem render={<Link href="/preferences" />}>
 								<Toolbox />
 								Preferences
 							</DropdownMenuItem>
-							<DropdownMenuItem>
+							<DropdownMenuItem render={<Link href="/settings" />}>
 								<Settings />
 								Settings
 							</DropdownMenuItem>
 						</DropdownMenuGroup>
 						<DropdownMenuSeparator />
-						<DropdownMenuItem onClick={() => alert("Sign Out triggered")}>
+						<DropdownMenuItem onClick={handleSignOut}>
 							<LogOutIcon />
 							Log out
 						</DropdownMenuItem>

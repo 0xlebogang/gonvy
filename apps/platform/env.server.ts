@@ -6,6 +6,11 @@ export const env = createEnv({
 	extends: [globalEnv],
 	server: {
 		BETTER_AUTH_URL: z.url(),
+		TRUSTED_DOMAINS: z
+			.string()
+			.min(1, "TRUSTED_DOMAINS is required")
+			.transform((value) => value.split(","))
+			.pipe(z.array(z.url())),
 	},
 	experimental__runtimeEnv: process.env,
 });
