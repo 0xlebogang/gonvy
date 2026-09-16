@@ -6,6 +6,7 @@ export const env = createEnv({
 	extends: [globalEnv],
 	server: {
 		DATABASE_URL: z.url(),
+		PLATFORM_URL: z.url(),
 		TRUSTED_DOMAINS: z
 			.string()
 			.min(1, "TRUSTED_DOMAINS is required")
