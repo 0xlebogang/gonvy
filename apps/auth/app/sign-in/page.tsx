@@ -15,6 +15,7 @@ import { toast } from "@workspace/ui/components/toast";
 import { cn } from "cn";
 import { GalleryVerticalEndIcon } from "lucide-react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { useForm } from "react-hook-form";
 import * as z from "zod/v3";
 import { signIn } from "@/lib/auth-client";
@@ -82,7 +83,7 @@ export default function SignInForm({
 				description: `Authenticated as ${data.user.email}`,
 			});
 
-			return;
+			redirect("/");
 		} catch (err) {
 			console.error(err);
 
