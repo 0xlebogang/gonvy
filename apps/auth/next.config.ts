@@ -7,6 +7,9 @@ const nextConfig: NextConfig = {
 		"@workspace/better-auth",
 		"@workspace/env",
 	],
+	devIndicators: {
+		position: "bottom-right",
+	},
 };
 
 export default nextConfig;

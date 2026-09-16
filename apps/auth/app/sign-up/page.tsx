@@ -123,7 +123,9 @@ export default function SignupForm({
 			});
 
 			toast.add({
-				title: "Error occured while trying to create your account",
+				title: "Unexpected error",
+				description:
+					"There was an unexpected error while trying to create your account",
 			});
 
 			return;
