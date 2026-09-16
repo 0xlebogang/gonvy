@@ -1,6 +1,7 @@
 import { Geist_Mono, Inter } from "next/font/google";
 
 import "@workspace/ui/globals.css";
+import { Toaster } from "@workspace/ui/components/toast";
 import { cn } from "@workspace/ui/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
 
@@ -32,6 +33,7 @@ export default function RootLayout({
 					<div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-background p-6 md:p-10">
 						<div className="w-full max-w-sm">{children}</div>
 					</div>
+					<Toaster />
 				</ThemeProvider>
 			</body>
 		</html>

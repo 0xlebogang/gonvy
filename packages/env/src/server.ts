@@ -3,7 +3,7 @@ import * as z from "zod";
 
 export const globalEnv = createEnv({
 	server: {
-		PORT: z.string(),
+		PORT: z.string().optional(),
 	},
 
 	runtimeEnvStrict: {

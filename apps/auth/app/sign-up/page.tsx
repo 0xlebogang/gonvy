@@ -1,5 +1,6 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@workspace/ui/components/button";
 import {
 	Field,
@@ -9,22 +10,120 @@ import {
 	FieldSeparator,
 } from "@workspace/ui/components/field";
 import { Input } from "@workspace/ui/components/input";
+import { Spinner } from "@workspace/ui/components/spinner";
+import { toast } from "@workspace/ui/components/toast";
 import { cn } from "cn";
 import { GalleryVerticalEndIcon } from "lucide-react";
 import Link from "next/link";
+import { useForm } from "react-hook-form";
+import * as z from "zod/v3";
+import { signUp } from "@/lib/auth-client";
 
 interface SignupFormProps extends React.ComponentProps<"div"> {
 	searchParams?: Record<string, string | string[] | undefined>;
 }
+
+export const signUpSchema = z
+	.object({
+		name: z.string().max(150, "Provided name is too long"),
+		email: z
+			.string()
+			.max(255, "Provided email is too long")
+			.email("Provided email is invalid"),
+		password: z
+			.string()
+			.min(8, "Provided password is too short")
+			.max(128, "Provided password is too long"),
+		confirmPassword: z.string(),
+		isLoading: z.boolean(),
+	})
+	.refine((data) => data.password === data.confirmPassword, {
+		message: "Passwords do not match",
+		path: ["confirmPassword"],
+	});
+
+export type SignUpSchema = z.infer<typeof signUpSchema>;
 
 export default function SignupForm({
 	className,
 	searchParams,
 	...props
 }: SignupFormProps) {
+	const {
+		register,
+		reset,
+		setValue,
+		getValues,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<SignUpSchema>({
+		resolver: zodResolver(signUpSchema),
+		defaultValues: {
+			name: "",
+			email: "",
+			password: "",
+			confirmPassword: "",
+			isLoading: false,
+		},
+	});
+
+	if (errors.root) {
+		reset({
+			password: "",
+			confirmPassword: "",
+		});
+		toast.add({
+			title: "Fix the errors in the form",
+			description: errors.root.message,
+		});
+		return;
+	}
+
+	async function onSubmit(formData: SignUpSchema) {
+		setValue("isLoading", true);
+
+		try {
+			const { data, error } = await signUp.email({
+				name: formData.name,
+				email: formData.email,
+				password: formData.confirmPassword,
+			});
+
+			if (error) {
+				reset({
+					password: "",
+					confirmPassword: "",
+				});
+
+				toast.add({
+					title: error.code,
+					description: error.message,
+				});
+				return;
+			}
+
+			toast.add({
+				title: `Welcome ${data.user.name.split(" ")[0]}. Your account has been created successfully`,
+				description: `Authenticated as ${data.user.email}`,
+			});
+
+			return;
+		} catch (_error) {
+			reset({
+				password: "",
+				confirmPassword: "",
+			});
+			setValue("isLoading", false);
+			return;
+		}
+	}
+
 	return (
 		<div className={cn("flex flex-col gap-6", className)} {...props}>
-			<form>
+			<form
+				onSubmit={handleSubmit(onSubmit)}
+				aria-disabled={getValues("isLoading")}
+			>
 				<FieldGroup>
 					<div className="flex flex-col items-center gap-2 text-center">
 						<Link
@@ -45,17 +144,55 @@ export default function SignupForm({
 					</div>
 
 					<Field>
-						<FieldLabel htmlFor="email">Email</FieldLabel>
-						<Input
-							id="email"
-							type="email"
-							placeholder="email@gonvy.com"
-							required
-						/>
+						<FieldLabel htmlFor="name">Name</FieldLabel>
+						<Input {...register("name")} type="text" placeholder="John Doe" />
+						{errors.name && (
+							<small className="text-red-600">{errors.name.message}</small>
+						)}
 					</Field>
 
 					<Field>
-						<Button type="submit">Create Account</Button>
+						<FieldLabel htmlFor="email">Email</FieldLabel>
+						<Input
+							{...register("email", { required: true })}
+							type="email"
+							placeholder="email@gonvy.com"
+						/>
+						{errors.email && (
+							<small className="text-red-600">{errors.email.message}</small>
+						)}
+					</Field>
+
+					<Field>
+						<FieldLabel htmlFor="password">Password</FieldLabel>
+						<Input
+							{...register("password", { required: true })}
+							type="password"
+							placeholder="********"
+						/>
+						{errors.password && (
+							<small className="text-red-600">{errors.password.message}</small>
+						)}
+					</Field>
+
+					<Field>
+						<FieldLabel htmlFor="confirmPassword">Confirm Password</FieldLabel>
+						<Input
+							{...register("confirmPassword", { required: true })}
+							type="password"
+							placeholder="********"
+						/>
+						{errors.confirmPassword && (
+							<small className="text-red-600">
+								{errors.confirmPassword.message}
+							</small>
+						)}
+					</Field>
+
+					<Field>
+						<Button type="submit" disabled={getValues("isLoading")}>
+							{getValues("isLoading") ? <Spinner /> : "Create Account"}
+						</Button>
 					</Field>
 
 					<FieldSeparator>Or</FieldSeparator>
