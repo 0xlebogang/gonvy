@@ -15,7 +15,7 @@ import { toast } from "@workspace/ui/components/toast";
 import { cn } from "cn";
 import { GalleryVerticalEndIcon } from "lucide-react";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import * as z from "zod/v3";
 import { signIn } from "@/lib/auth-client";
@@ -37,6 +37,7 @@ export default function SignInForm({
 	searchParams,
 	...props
 }: SigninFormProps) {
+	const router = useRouter();
 	const {
 		register,
 		reset,
@@ -57,7 +58,7 @@ export default function SignInForm({
 		setValue("isLoading", true);
 
 		try {
-			const { data, error } = await signIn.email({
+			const { error } = await signIn.email({
 				email: formData.email,
 				password: formData.password,
 			});
@@ -78,12 +79,8 @@ export default function SignInForm({
 
 			reset();
 
-			toast.add({
-				title: `Welcome back ${data.user.name.split("")}`,
-				description: `Authenticated as ${data.user.email}`,
-			});
-
-			redirect("/");
+			router.push("/");
+			router.refresh();
 		} catch (err) {
 			console.error(err);
 

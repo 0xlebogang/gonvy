@@ -15,7 +15,7 @@ import { toast } from "@workspace/ui/components/toast";
 import { cn } from "cn";
 import { GalleryVerticalEndIcon } from "lucide-react";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import * as z from "zod/v3";
 import { signUp } from "@/lib/auth-client";
@@ -50,6 +50,7 @@ export default function SignupForm({
 	searchParams,
 	...props
 }: SignupFormProps) {
+	const router = useRouter();
 	const {
 		register,
 		reset,
@@ -108,12 +109,8 @@ export default function SignupForm({
 
 			reset();
 
-			toast.add({
-				title: `Welcome ${data.user.name.split(" ")[0]}. Account created successfully`,
-				description: `Authenticated as ${data.user.email}`,
-			});
-
-			redirect("/");
+			router.push("/");
+			router.refresh();
 		} catch (error) {
 			console.error(error);
 

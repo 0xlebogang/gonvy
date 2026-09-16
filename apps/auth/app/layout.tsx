@@ -3,7 +3,9 @@ import { Geist_Mono, Inter } from "next/font/google";
 import "@workspace/ui/globals.css";
 import { Toaster } from "@workspace/ui/components/toast";
 import { cn } from "@workspace/ui/lib/utils";
+import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/theme-provider";
+import { env } from "@/env.server";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -11,6 +13,14 @@ const fontMono = Geist_Mono({
 	subsets: ["latin"],
 	variable: "--font-mono",
 });
+
+export const metadata: Metadata = {
+	title: "Auth | Gonvy",
+	description: "Authenticated to your Gonvy instance",
+	other: {
+		preconnect: env.PLATFORM_URL,
+	},
+};
 
 export default function RootLayout({
 	children,
