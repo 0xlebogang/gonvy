@@ -9,7 +9,12 @@ export const env = createEnv({
 		TRUSTED_DOMAINS: z
 			.string()
 			.min(1, "TRUSTED_DOMAINS is required")
-			.transform((value) => value.split(","))
+			.transform((value) =>
+				value
+					.split(",")
+					.map((host) => host.trim())
+					.filter(Boolean),
+			)
 			.pipe(z.array(z.url())),
 	},
 	experimental__runtimeEnv: process.env,
