@@ -1,5 +1,6 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@workspace/ui/components/button";
 import {
 	Field,
@@ -9,22 +10,103 @@ import {
 	FieldSeparator,
 } from "@workspace/ui/components/field";
 import { Input } from "@workspace/ui/components/input";
+import { Spinner } from "@workspace/ui/components/spinner";
+import { toast } from "@workspace/ui/components/toast";
 import { cn } from "cn";
 import { GalleryVerticalEndIcon } from "lucide-react";
 import Link from "next/link";
+import { useForm } from "react-hook-form";
+import * as z from "zod/v3";
+import { signIn } from "@/lib/auth-client";
 
 interface SigninFormProps extends React.ComponentProps<"div"> {
 	searchParams?: Record<string, string | string[] | undefined>;
 }
+
+export const signInSchema = z.object({
+	email: z.string().email("Provided email is invalid"),
+	password: z.string().max(128, "Provided password is too long"),
+	isLoading: z.boolean(),
+});
+
+export type SignInSchema = z.infer<typeof signInSchema>;
 
 export default function SignInForm({
 	className,
 	searchParams,
 	...props
 }: SigninFormProps) {
+	const {
+		register,
+		reset,
+		handleSubmit,
+		getValues,
+		setValue,
+		formState: { errors },
+	} = useForm<SignInSchema>({
+		resolver: zodResolver(signInSchema),
+		defaultValues: {
+			email: "",
+			password: "",
+			isLoading: false,
+		},
+	});
+
+	async function onSubmit(formData: SignInSchema) {
+		setValue("isLoading", true);
+
+		try {
+			const { data, error } = await signIn.email({
+				email: formData.email,
+				password: formData.password,
+			});
+
+			if (error) {
+				reset({
+					password: "",
+					isLoading: false,
+				});
+
+				toast.add({
+					title: error.code,
+					description: error.message,
+				});
+
+				return;
+			}
+
+			reset();
+
+			toast.add({
+				title: `Welcome back ${data.user.name.split("")}`,
+				description: `Authenticated as ${data.user.email}`,
+			});
+
+			return;
+		} catch (err) {
+			console.error(err);
+
+			reset({
+				password: "",
+				isLoading: false,
+			});
+
+			toast.add({
+				title: "Unexpected error",
+				description:
+					"There was an unexpected error while trying to sign you in",
+			});
+
+			return;
+		}
+	}
+
 	return (
 		<div className={cn("flex flex-col gap-6", className)} {...props}>
-			<form>
+			<form
+				onSubmit={handleSubmit(onSubmit)}
+				aria-disabled={getValues("isLoading")}
+			>
 				<FieldGroup>
 					<div className="flex flex-col items-center gap-2 text-center">
 						<Link
@@ -47,15 +129,25 @@ export default function SignInForm({
 					<Field>
 						<FieldLabel htmlFor="email">Email</FieldLabel>
 						<Input
-							id="email"
+							{...register("email", { required: true })}
 							type="email"
 							placeholder="email@gonvy.com"
-							required
 						/>
 					</Field>
 
 					<Field>
-						<Button type="submit">Login</Button>
+						<FieldLabel htmlFor="password">Password</FieldLabel>
+						<Input
+							{...register("password", { required: true })}
+							type="password"
+							placeholder="********"
+						/>
+					</Field>
+
+					<Field>
+						<Button type="submit" disabled={getValues("isLoading")}>
+							{getValues("isLoading") ? <Spinner /> : "Login"}
+						</Button>
 					</Field>
 
 					<FieldSeparator>Or</FieldSeparator>
