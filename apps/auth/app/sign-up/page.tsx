@@ -72,10 +72,12 @@ export default function SignupForm({
 			password: "",
 			confirmPassword: "",
 		});
+
 		toast.add({
 			title: "Fix the errors in the form",
 			description: errors.root.message,
 		});
+
 		return;
 	}
 
@@ -93,6 +95,7 @@ export default function SignupForm({
 				reset({
 					password: "",
 					confirmPassword: "",
+					isLoading: false,
 				});
 
 				toast.add({
@@ -102,18 +105,27 @@ export default function SignupForm({
 				return;
 			}
 
+			reset();
+
 			toast.add({
-				title: `Welcome ${data.user.name.split(" ")[0]}. Your account has been created successfully`,
+				title: `Welcome ${data.user.name.split(" ")[0]}. Account created successfully`,
 				description: `Authenticated as ${data.user.email}`,
 			});
 
 			return;
-		} catch (_error) {
+		} catch (error) {
+			console.error(error);
+
 			reset({
 				password: "",
 				confirmPassword: "",
+				isLoading: false,
 			});
-			setValue("isLoading", false);
+
+			toast.add({
+				title: "Error occured while trying to create your account",
+			});
+
 			return;
 		}
 	}
