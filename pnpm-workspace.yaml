@@ -1,0 +1,12 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+allowBuilds:
+  better-sqlite3: true
+  esbuild: true
+catalog:
+  '@t3-oss/env-core': ^0.13.11
+  '@t3-oss/env-nextjs': ^0.13.11
+  '@types/node': ^22.20.3
+  typescript: ^6.0.3
+  zod: ^4.6.5

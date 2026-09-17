@@ -1,0 +1,22 @@
+{
+	"$schema": "./node_modules/turbo/schema.json",
+	"ui": "tui",
+	"tasks": {
+		"dev": {
+			"cache": false,
+			"persistent": true,
+			"interactive": true
+		},
+		"build": {
+			"dependsOn": ["^build"],
+			"inputs": ["$TURBO_DEFAULT$", ".env*", "!.env.example"],
+			"outputs": [".next/**", "!.next/cache/**", "dist/**"]
+		},
+		"test": {
+			"dependsOn": ["^test"],
+			"inputs": ["$TURBO_DEFAULT$", ".env.test"]
+		},
+		"lint": {},
+		"lint:fix": {}
+	}
+}

@@ -1,0 +1,12 @@
+{
+	"extends": "@workspace/typescript-config/base",
+	"compilerOptions": {
+		"module": "preserve",
+		"moduleResolution": "bundler",
+		"paths": {
+			"@/*": ["./src/*"]
+		}
+	},
+	"include": ["."],
+	"exclude": ["node_modules"]
+}

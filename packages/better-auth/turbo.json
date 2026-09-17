@@ -1,0 +1,29 @@
+{
+	"$schema": "../../node_modules/turbo/schema.json",
+	"extends": ["//"],
+	"tasks": {
+		"make:migrations:dev": {
+			"cache": false
+		},
+		"make:migrations:prod": {
+			"inputs": [
+				"src/server.ts",
+				"better-auth_migrations/**",
+				".env*",
+				"!.env.example"
+			],
+			"outputs": ["better-auth_migrations/**"],
+			"env": ["NODE_ENV", "BETTER_AUTH_*", "DATABASE_URL"]
+		},
+		"migrate": {
+			"dependsOn": ["make:migrations:dev"],
+			"inputs": [
+				"src/migrate.ts",
+				"better-auth_migrations/**",
+				".env*",
+				"!.env.example"
+			],
+			"env": ["NODE_ENV", "BETTER_AUTH_*", "DATABASE_URL"]
+		}
+	}
+}

@@ -1,0 +1,23 @@
+{
+	"name": "idp",
+	"version": "0.0.0",
+	"private": true,
+	"scripts": {
+		"dev": "dotenv -c -- next dev",
+		"build": "next build",
+		"lint": "biome check",
+		"lint:fix": "biome check --fix --unsafe"
+	},
+	"dependencies": {
+		"@workspace/better-auth": "workspace:*",
+		"next": "16.3.5",
+		"zod": "catalog:"
+	},
+	"devDependencies": {
+		"@types/node": "catalog:",
+		"@types/react": "19.3.0",
+		"@workspace/env": "workspace:*",
+		"@workspace/typescript-config": "workspace:*",
+		"typescript": "catalog:"
+	}
+}

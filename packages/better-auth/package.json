@@ -1,0 +1,34 @@
+{
+	"name": "@workspace/better-auth",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"exports": {
+		".": "./src/index.ts",
+		"./server": "./src/server.ts",
+		"./client": "./src/client.ts"
+	},
+	"scripts": {
+		"make:migrations:dev": "dotenv -c -- pnpm dlx auth@latest generate -y --config ./src/server.ts --output ./dev-migrations/auth.sql",
+		"migrate:dev": "dotenv -c -- pnpm dlx auth@latest migrate -y --config ./src/server.ts --output ./dev-migrations/auth.sql",
+		"make:migrations:prod": "dotenv -c -- pnpm dlx auth@latest generate -y --config ./src/server.ts",
+		"migrate": "dotenv -c -- pnpm dlx auth@latest migrate -y --config ./src/server.ts",
+		"test": "vitest run",
+		"lint": "biome check",
+		"lint:fix": "biome check --fix --unsafe"
+	},
+	"devDependencies": {
+		"@types/better-sqlite3": "^9.6.0",
+		"@types/node": "catalog:",
+		"@types/pg": "^8.23.1",
+		"@workspace/typescript-config": "workspace:*",
+		"better-sqlite3": "^13.0.3",
+		"tsx": "^4.23.13",
+		"typescript": "catalog:"
+	},
+	"dependencies": {
+		"better-auth": "^1.7.5",
+		"kysely": "^0.29.6",
+		"pg": "^8.23.0"
+	}
+}
