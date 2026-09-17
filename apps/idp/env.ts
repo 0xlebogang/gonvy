@@ -9,6 +9,15 @@ const sqliteDBFilepathRegex =
 export const env = createNextjsEnv({
 	extends: [globalEnv],
 	server: {
+		CORS_ALLOWED_ORIGINS: z
+			.string()
+			.transform((value) =>
+				value
+					.split(",")
+					.map((host) => host.trim())
+					.filter(Boolean),
+			)
+			.pipe(z.array(z.string().url())),
 		DATABASE_URL: z.union([
 			z.string().url(),
 			z

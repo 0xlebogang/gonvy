@@ -1,9 +1,9 @@
 gonvy.localhost {
-	reverse_proxy localhost:3000
+	reverse_proxy localhost:4321
 }
 
 app.gonvy.localhost {
-	reverse_proxy localhost:3001
+	reverse_proxy localhost:3000
 }
 
 idp.gonvy.localhost {
