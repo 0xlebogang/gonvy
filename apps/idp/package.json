@@ -10,12 +10,12 @@
 	},
 	"dependencies": {
 		"@workspace/better-auth": "workspace:*",
-		"next": "16.3.5",
+		"next": "catalog:",
 		"zod": "catalog:"
 	},
 	"devDependencies": {
 		"@types/node": "catalog:",
-		"@types/react": "19.3.0",
+		"@types/react": "catalog:",
 		"@workspace/env": "workspace:*",
 		"@workspace/typescript-config": "workspace:*",
 		"typescript": "catalog:"
