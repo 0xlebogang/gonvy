@@ -1,0 +1,22 @@
+{
+	"$schema": "../../node_modules/@biomejs/biome/configuration_schema.json",
+  "root": false,
+	"files": {
+		"includes": [
+			"**/src/**/*",
+			"**/index.html",
+			"**/vite.config.ts",
+			"!**/src/routeTree.gen.ts"
+		]
+	},
+	"linter": {
+    "enabled": true,
+    "domains": {
+      "react": "recommended"
+    },
+		"rules": {
+      "recommended": true
+		}
+	}
+}
+
