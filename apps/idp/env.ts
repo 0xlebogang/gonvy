@@ -6,9 +6,21 @@ import * as z from "zod/v3";
 const sqliteDBFilepathRegex =
 	/^(\.?\.?\/|[a-zA-Z]:\\|\/)?[\w\-. /]+\.[a-zA-Z0-0]+$/;
 
+// Regex supporting standard domains, subdomains, and optionally localhost
+const domainRegex =
+	/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$|^localhost$/;
+
 export const env = createNextjsEnv({
 	extends: [globalEnv],
 	server: {
+		BETTER_AUTH_DOMAIN: z
+			.string()
+			.trim()
+			.min(1, "BETTER_AUTH_DOMAIN is required")
+			.regex(
+				domainRegex,
+				"Must be a valid domain name (e.g., example.com, auth.dev.com or localhost",
+			),
 		CORS_ALLOWED_ORIGINS: z
 			.string()
 			.transform((value) =>

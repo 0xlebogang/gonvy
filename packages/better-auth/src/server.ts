@@ -16,5 +16,11 @@ export const auth = betterAuth({
 	emailAndPassword: {
 		enabled: true,
 	},
+	advanced: {
+		crossSubDomainCookies: {
+			enabled: true,
+			domain: process.env.BETTER_AUTH_DOMAIN,
+		},
+	},
 	plugins: [openAPI()],
 });
