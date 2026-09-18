@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+
 import { Button } from "@workspace/ui/components/button";
 import {
 	Field,
@@ -15,65 +16,55 @@ import { cn } from "cn";
 import { GalleryVerticalEndIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import type * as React from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod/v3";
-import { signUp } from "@/lib/auth-client";
+import { signIn } from "@/lib/auth-client";
 
-export interface SignUpFormProps extends React.ComponentProps<"div"> {
+export const signInSchema = z.object({
+	email: z.string().min(1, "Email is required").email(),
+	password: z.string(),
+	isLoading: z.boolean(),
+});
+
+export type SignInSchema = z.infer<typeof signInSchema>;
+
+export interface SignInFormProps extends React.ComponentProps<"div"> {
 	searchParams?: string;
 }
 
-export const signUpSchema = z
-	.object({
-		name: z.string().max(255, "Name is too long"),
-		email: z.string().min(1, "Emaill is required").email(),
-		password: z
-			.string()
-			.min(8, "Password is too short")
-			.max(128, "Password is too long"),
-		confirmPassword: z.string(),
-		isLoading: z.boolean(),
-	})
-	.refine((values) => values.password === values.confirmPassword, {
-		message: "Passwords do not match",
-		path: ["confirmPassword"],
-	});
-
-export type SignUpSchema = z.infer<typeof signUpSchema>;
-
-export function Form({ className, searchParams, ...props }: SignUpFormProps) {
+export function Form({ className, searchParams, ...props }: SignInFormProps) {
 	const router = useRouter();
-
 	const {
-		register,
 		reset,
-		handleSubmit,
+		register,
 		setValue,
 		getValues,
+		handleSubmit,
 		formState: { errors },
-	} = useForm<SignUpSchema>({
-		resolver: zodResolver(signUpSchema),
+	} = useForm<SignInSchema>({
+		resolver: zodResolver(signInSchema),
 		defaultValues: {
-			name: "",
 			email: "",
 			password: "",
-			confirmPassword: "",
 			isLoading: false,
 		},
 	});
 
-	async function onSubmit(formData: SignUpSchema) {
+	async function onSubmit(formData: SignInSchema) {
 		setValue("isLoading", true);
 
 		try {
-			const { error } = await signUp.email({
-				name: formData.name,
+			const { error } = await signIn.email({
 				email: formData.email,
 				password: formData.password,
 			});
 
 			if (error) {
 				alert(error.message);
+				reset({
+					password: "",
+				});
 				return;
 			}
 
@@ -81,12 +72,11 @@ export function Form({ className, searchParams, ...props }: SignUpFormProps) {
 			router.refresh();
 		} catch (err) {
 			console.error(err);
-
-			return;
 		} finally {
 			setValue("isLoading", false);
 			reset();
 		}
+		return;
 	}
 
 	return (
@@ -108,17 +98,9 @@ export function Form({ className, searchParams, ...props }: SignUpFormProps) {
 						</Link>
 						<h1 className="text-xl font-bold">Welcome to Gonvy.</h1>
 						<FieldDescription>
-							Already have an account? <a href="/login">Sign in</a>
+							Don&apos;t have an account? <Link href="/signup">Sign up</Link>
 						</FieldDescription>
 					</div>
-
-					<Field>
-						<FieldLabel htmlFor="name">Name</FieldLabel>
-						<Input {...register("name")} type="text" placeholder="John Doe" />
-						{errors.name && (
-							<small className="text-red-600">{errors.name.message}</small>
-						)}
-					</Field>
 
 					<Field>
 						<FieldLabel htmlFor="email">Email</FieldLabel>
@@ -145,22 +127,8 @@ export function Form({ className, searchParams, ...props }: SignUpFormProps) {
 					</Field>
 
 					<Field>
-						<FieldLabel htmlFor="confirmPassword">Confirm Password</FieldLabel>
-						<Input
-							{...register("confirmPassword", { required: true })}
-							type="password"
-							placeholder="********"
-						/>
-						{errors.confirmPassword && (
-							<small className="text-red-600">
-								{errors.confirmPassword.message}
-							</small>
-						)}
-					</Field>
-
-					<Field>
 						<Button type="submit" disabled={getValues("isLoading")}>
-							{getValues("isLoading") ? <Spinner /> : "Create Account"}
+							{getValues("isLoading") ? <Spinner /> : "Login"}
 						</Button>
 					</Field>
 
