@@ -1,3 +1,5 @@
+"use client";
+
 import { SidebarProvider } from "@workspace/ui/components/sidebar";
 import type React from "react";
 import { ThemeProvider } from "@/components/theme-provider";

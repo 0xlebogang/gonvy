@@ -25,10 +25,10 @@ import {
 	BadgeCheckIcon,
 	BellIcon,
 	ChevronsUpDownIcon,
-	CreditCardIcon,
 	LogOutIcon,
-	SparklesIcon,
+	Settings,
 } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export function NavUser({ session }: { session: SessionData | null }) {
@@ -90,28 +90,25 @@ export function NavUser({ session }: { session: SessionData | null }) {
 						</DropdownMenuGroup>
 						<DropdownMenuSeparator />
 						<DropdownMenuGroup>
-							<DropdownMenuItem>
-								<SparklesIcon />
-								Upgrade to Pro
-							</DropdownMenuItem>
-						</DropdownMenuGroup>
-						<DropdownMenuSeparator />
-						<DropdownMenuGroup>
-							<DropdownMenuItem>
+							<DropdownMenuItem render={<Link href="/account" />}>
 								<BadgeCheckIcon />
 								Account
 							</DropdownMenuItem>
-							<DropdownMenuItem>
-								<CreditCardIcon />
-								Billing
+							<DropdownMenuItem render={<Link href="/preferences" />}>
+								<Settings />
+								Preferences
 							</DropdownMenuItem>
-							<DropdownMenuItem>
+							<DropdownMenuItem render={<Link href="/notifications" />}>
 								<BellIcon />
 								Notifications
 							</DropdownMenuItem>
 						</DropdownMenuGroup>
 						<DropdownMenuSeparator />
-						<DropdownMenuItem>
+						<DropdownMenuItem
+							variant="destructive"
+							className="cursor-pointer"
+							onClick={() => alert("Logging out")}
+						>
 							<LogOutIcon />
 							Log out
 						</DropdownMenuItem>
