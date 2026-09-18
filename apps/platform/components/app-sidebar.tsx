@@ -6,16 +6,15 @@ import {
 	SidebarRail,
 } from "@workspace/ui/components/sidebar";
 import {
-	AudioLinesIcon,
-	BookOpenIcon,
-	BotIcon,
-	FrameIcon,
+	CreditCardIcon,
+	FolderGit2Icon,
 	GalleryVerticalEndIcon,
-	MapIcon,
-	PieChartIcon,
+	KeyRoundIcon,
+	LayersIcon,
+	LayoutDashboardIcon,
 	Settings2Icon,
+	ShieldCheckIcon,
 	TerminalIcon,
-	TerminalSquareIcon,
 } from "lucide-react";
 import type * as React from "react";
 import { NavMain } from "@/components/nav-main";
@@ -26,130 +25,76 @@ import { fetchActiveSession } from "@/data/auth.data";
 
 // This is sample data.
 const data = {
-	user: {
-		name: "shadcn",
-		email: "m@example.com",
-		avatar: "/avatars/shadcn.jpg",
-	},
 	teams: [
 		{
 			name: "Acme Inc",
 			logo: <GalleryVerticalEndIcon />,
 			plan: "Enterprise",
 		},
-		{
-			name: "Acme Corp.",
-			logo: <AudioLinesIcon />,
-			plan: "Startup",
-		},
-		{
-			name: "Evil Corp.",
-			logo: <TerminalIcon />,
-			plan: "Free",
-		},
 	],
 	navMain: [
 		{
-			title: "Playground",
-			url: "#",
-			icon: <TerminalSquareIcon />,
+			title: "Projects",
+			url: "/projects",
+			icon: <FolderGit2Icon />,
 			isActive: true,
 			items: [
-				{
-					title: "History",
-					url: "#",
-				},
-				{
-					title: "Starred",
-					url: "#",
-				},
-				{
-					title: "Settings",
-					url: "#",
-				},
+				{ title: "All Projects", url: "/projects" },
+				{ title: "Environments", url: "/environments" },
+				{ title: "Global Variables", url: "/variables/global" },
 			],
 		},
 		{
-			title: "Models",
-			url: "#",
-			icon: <BotIcon />,
+			title: "Integrations",
+			url: "/integrations",
+			icon: <LayersIcon />,
 			items: [
-				{
-					title: "Genesis",
-					url: "#",
-				},
-				{
-					title: "Explorer",
-					url: "#",
-				},
-				{
-					title: "Quantum",
-					url: "#",
-				},
+				{ title: "Connected Apps", url: "/integrations/active" },
+				{ title: "Webhooks", url: "/integrations/webhooks" },
+				{ title: "Pipes & Sync", url: "/integrations/sync" },
 			],
 		},
 		{
-			title: "Documentation",
-			url: "#",
-			icon: <BookOpenIcon />,
+			title: "Access & Security",
+			url: "/security",
+			icon: <KeyRoundIcon />,
 			items: [
-				{
-					title: "Introduction",
-					url: "#",
-				},
-				{
-					title: "Get Started",
-					url: "#",
-				},
-				{
-					title: "Tutorials",
-					url: "#",
-				},
-				{
-					title: "Changelog",
-					url: "#",
-				},
+				{ title: "Service Accounts", url: "/security/service-accounts" },
+				{ title: "API Tokens", url: "/security/tokens" },
+				{ title: "Audit Logs", url: "/security/audit-logs" },
 			],
 		},
 		{
 			title: "Settings",
-			url: "#",
+			url: "/settings",
 			icon: <Settings2Icon />,
 			items: [
-				{
-					title: "General",
-					url: "#",
-				},
-				{
-					title: "Team",
-					url: "#",
-				},
-				{
-					title: "Billing",
-					url: "#",
-				},
-				{
-					title: "Limits",
-					url: "#",
-				},
+				{ title: "General", url: "/settings/general" },
+				{ title: "Members & RBAC", url: "/settings/members" },
+				{ title: "Billing", url: "/settings/billing" },
 			],
 		},
 	],
 	projects: [
 		{
-			name: "Design Engineering",
-			url: "#",
-			icon: <FrameIcon />,
+			name: "Core API",
+			url: "/projects/core-api",
+			icon: <TerminalIcon />,
 		},
 		{
-			name: "Sales & Marketing",
-			url: "#",
-			icon: <PieChartIcon />,
+			name: "Web Dashboard",
+			url: "/projects/web-dashboard",
+			icon: <LayoutDashboardIcon />,
 		},
 		{
-			name: "Travel",
-			url: "#",
-			icon: <MapIcon />,
+			name: "Auth Service",
+			url: "/projects/auth-service",
+			icon: <ShieldCheckIcon />,
+		},
+		{
+			name: "Payment Gateway",
+			url: "/projects/payment-gateway",
+			icon: <CreditCardIcon />,
 		},
 	],
 };
