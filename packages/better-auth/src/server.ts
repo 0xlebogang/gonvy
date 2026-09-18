@@ -12,5 +12,8 @@ export const auth = betterAuth({
 		type: isDev ? "sqlite" : "postgres",
 		...(isDev ? {} : { schemaName: "auth" }),
 	},
+	emailAndPassword: {
+		enabled: true,
+	},
 	plugins: [openAPI()],
 });
