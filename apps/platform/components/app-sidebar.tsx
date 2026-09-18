@@ -169,7 +169,7 @@ export async function AppSidebar({
 				<NavProjects projects={data.projects} />
 			</SidebarContent>
 			<SidebarFooter>
-				<NavUser session={activeSession} />
+				<NavUser user={activeSession?.user || null} />
 			</SidebarFooter>
 			<SidebarRail />
 		</Sidebar>

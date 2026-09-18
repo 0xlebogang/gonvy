@@ -1,6 +1,6 @@
 "use client";
 
-import type { SessionData } from "@workspace/better-auth/types";
+import type { User } from "@workspace/better-auth/types";
 import {
 	Avatar,
 	AvatarFallback,
@@ -31,17 +31,16 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-export function NavUser({ session }: { session: SessionData | null }) {
+export function NavUser({ user }: { user: User | null }) {
 	const { isMobile } = useSidebar();
 	const router = useRouter();
 
-	if (!session) {
+	if (!user) {
 		router.push("/");
 		router.refresh();
 		return;
 	}
 
-	const { user } = session;
 	const initials = user.name
 		.split(" ")
 		.map((name) => name[0])
