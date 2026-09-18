@@ -5,6 +5,7 @@ import * as z from "zod/v3";
 export const env = createNextjsEnv({
 	extends: [globalEnv],
 	server: {
+		AUTH_APP_URL: z.string().url(),
 		BETTER_AUTH_URL: z.string().url(),
 		BETTER_AUTH_SECRET: z
 			.string()

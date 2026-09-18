@@ -368,6 +368,9 @@ importers:
 
   apps/platform:
     dependencies:
+      '@workspace/better-auth':
+        specifier: workspace:*
+        version: link:../../packages/better-auth
       '@workspace/ui':
         specifier: workspace:*
         version: link:../../packages/ui
