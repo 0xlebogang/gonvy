@@ -17,5 +17,7 @@ catalog:
   react-dom: ^19.2.4
   typescript: ^6.0.3
   zod: ^4.6.5
+  react-hook-form: ^7.88.0
+  '@hookform/resolvers': ^5.9.1
 minimumReleaseAgeExclude:
   - lucide-react@1.47.0
