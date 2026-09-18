@@ -6,7 +6,7 @@ app.gonvy.localhost {
 	reverse_proxy localhost:3000
 }
 
-idp.gonvy.localhost {
+api.auth.gonvy.localhost {
 	reverse_proxy localhost:5000
 }
 
