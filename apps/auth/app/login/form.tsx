@@ -55,10 +55,7 @@ export function Form({ className, searchParams, ...props }: SignInFormProps) {
 		setValue("isLoading", true);
 
 		try {
-			const { error } = await signIn.email({
-				email: formData.email,
-				password: formData.password,
-			});
+			const { error } = await signIn.email({ ...formData });
 
 			if (error) {
 				alert(error.message);

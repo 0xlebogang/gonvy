@@ -66,11 +66,7 @@ export function Form({ className, searchParams, ...props }: SignUpFormProps) {
 		setValue("isLoading", true);
 
 		try {
-			const { error } = await signUp.email({
-				name: formData.name,
-				email: formData.email,
-				password: formData.password,
-			});
+			const { error } = await signUp.email({ ...formData });
 
 			if (error) {
 				alert(error.message);
