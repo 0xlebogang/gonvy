@@ -374,6 +374,9 @@ importers:
       '@workspace/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      cn:
+        specifier: ^0.3.0
+        version: 0.3.0
       lucide-react:
         specifier: 'catalog:'
         version: 1.47.0(react@19.3.0)
