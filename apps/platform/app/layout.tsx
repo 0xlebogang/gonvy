@@ -2,6 +2,7 @@ import { Geist_Mono, Inter } from "next/font/google";
 
 import "@workspace/ui/globals.css";
 import { cn } from "@workspace/ui/lib/utils";
+import UIShell from "@/components/ui-shell";
 import Providers from "./providers";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
@@ -28,7 +29,9 @@ export default function RootLayout({
 			)}
 		>
 			<body>
-				<Providers>{children}</Providers>
+				<Providers>
+					<UIShell>{children}</UIShell>
+				</Providers>
 			</body>
 		</html>
 	);
