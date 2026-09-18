@@ -1,7 +1,6 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import { Button } from "@workspace/ui/components/button";
 import {
 	Field,
@@ -15,8 +14,10 @@ import { Spinner } from "@workspace/ui/components/spinner";
 import { cn } from "cn";
 import { GalleryVerticalEndIcon } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import * as z from "zod/v3";
+import { signUp } from "@/lib/auth-client";
 
 export interface SignUpFormProps extends React.ComponentProps<"div"> {
 	searchParams?: string;
@@ -24,7 +25,7 @@ export interface SignUpFormProps extends React.ComponentProps<"div"> {
 
 export const signUpSchema = z
 	.object({
-		name: z.string().max(255, "Name is too long").optional(),
+		name: z.string().max(255, "Name is too long"),
 		email: z.string().min(1, "Emaill is required").email(),
 		password: z
 			.string()
@@ -41,6 +42,8 @@ export const signUpSchema = z
 export type SignUpSchema = z.infer<typeof signUpSchema>;
 
 export function Form({ className, searchParams, ...props }: SignUpFormProps) {
+	const router = useRouter();
+
 	const {
 		register,
 		reset,
@@ -61,8 +64,29 @@ export function Form({ className, searchParams, ...props }: SignUpFormProps) {
 
 	async function onSubmit(formData: SignUpSchema) {
 		setValue("isLoading", true);
-		console.log(formData);
-		setValue("isLoading", false);
+
+		try {
+			const { error } = await signUp.email({
+				name: formData.name,
+				email: formData.email,
+				password: formData.password,
+			});
+
+			if (error) {
+				alert(error.message);
+				return;
+			}
+
+			router.push("/");
+			router.refresh();
+		} catch (err) {
+			console.error(err);
+
+			return;
+		} finally {
+			setValue("isLoading", false);
+			reset();
+		}
 	}
 
 	return (
