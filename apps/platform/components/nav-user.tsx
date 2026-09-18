@@ -30,6 +30,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { signOut } from "@/lib/auth-client";
 
 export function NavUser({ user }: { user: User | null }) {
 	const { isMobile } = useSidebar();
@@ -47,6 +48,21 @@ export function NavUser({ user }: { user: User | null }) {
 		.join("")
 		.toUpperCase()
 		.slice(0, 2);
+
+	async function handleSignOut() {
+		try {
+			const { error } = await signOut();
+			if (error) {
+				throw new Error(error.message);
+			}
+
+			// TODO: change redirect to the main marketing website
+			router.push("/");
+		} catch (err) {
+			console.error(err);
+			return;
+		}
+	}
 
 	return (
 		<SidebarMenu>
@@ -106,7 +122,7 @@ export function NavUser({ user }: { user: User | null }) {
 						<DropdownMenuItem
 							variant="destructive"
 							className="cursor-pointer"
-							onClick={() => alert("Logging out")}
+							onClick={handleSignOut}
 						>
 							<LogOutIcon />
 							Log out
