@@ -4,3 +4,5 @@ import { authClient } from "./client";
 const client = authClient();
 
 export type SessionData = typeof client.$Infer.Session;
+export type User = typeof client.$Infer.Session.user;
+export type Session = typeof client.$Infer.Session.session;
