@@ -13,7 +13,7 @@
 				"!.env.example"
 			],
 			"outputs": ["better-auth_migrations/**"],
-			"env": ["NODE_ENV", "BETTER_AUTH_*", "DATABASE_URL"]
+			"env": ["DATABASE_URL"]
 		},
 		"migrate": {
 			"dependsOn": ["make:migrations:dev"],
@@ -23,7 +23,7 @@
 				".env*",
 				"!.env.example"
 			],
-			"env": ["NODE_ENV", "BETTER_AUTH_*", "DATABASE_URL"]
+			"env": ["DATABASE_URL"]
 		}
 	}
 }

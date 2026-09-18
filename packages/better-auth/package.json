@@ -6,7 +6,8 @@
 	"exports": {
 		".": "./src/index.ts",
 		"./server": "./src/server.ts",
-		"./client": "./src/client.ts"
+		"./client": "./src/client.ts",
+		"./types": "./src/types.ts"
 	},
 	"scripts": {
 		"make:migrations:dev": "dotenv -c -- pnpm dlx auth@latest generate -y --config ./src/server.ts --output ./dev-migrations/auth.sql",

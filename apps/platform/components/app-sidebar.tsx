@@ -1,5 +1,3 @@
-"use client";
-
 import {
 	Sidebar,
 	SidebarContent,
@@ -24,6 +22,7 @@ import { NavMain } from "@/components/nav-main";
 import { NavProjects } from "@/components/nav-projects";
 import { NavUser } from "@/components/nav-user";
 import { TeamSwitcher } from "@/components/team-switcher";
+import { fetchActiveSession } from "@/service/auth.service";
 
 // This is sample data.
 const data = {
@@ -155,7 +154,11 @@ const data = {
 	],
 };
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export async function AppSidebar({
+	...props
+}: React.ComponentProps<typeof Sidebar>) {
+	const activeSession = await fetchActiveSession();
+
 	return (
 		<Sidebar collapsible="icon" {...props}>
 			<SidebarHeader>
@@ -166,7 +169,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 				<NavProjects projects={data.projects} />
 			</SidebarContent>
 			<SidebarFooter>
-				<NavUser user={data.user} />
+				<NavUser session={activeSession} />
 			</SidebarFooter>
 			<SidebarRail />
 		</Sidebar>
