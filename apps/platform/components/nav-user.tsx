@@ -57,7 +57,7 @@ export function NavUser({ user }: { user: User | null }) {
 			}
 
 			// TODO: change redirect to the main marketing website
-			router.push("/");
+			router.refresh();
 		} catch (err) {
 			console.error(err);
 			return;

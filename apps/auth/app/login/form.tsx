@@ -23,7 +23,7 @@ import { signIn } from "@/lib/auth-client";
 
 export const signInSchema = z.object({
 	email: z.string().min(1, "Email is required").email(),
-	password: z.string(),
+	password: z.string().min(1, "Password is required"),
 	isLoading: z.boolean(),
 });
 
