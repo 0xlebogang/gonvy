@@ -7,6 +7,7 @@ import (
 	"github.com/danielgtaylor/huma/v2"
 	"github.com/danielgtaylor/huma/v2/adapters/humagin"
 	"github.com/gin-gonic/gin"
+	"gonvy.internal/internal/httpapi/middleware"
 	"gonvy.internal/internal/persistance/postgres"
 )
 
@@ -27,6 +28,7 @@ func NewRouter(log *slog.Logger, db postgres.DB) (http.Handler, huma.API) {
 	engine := gin.New()
 	engine.Use(gin.Recovery())
 	api := humagin.New(engine, huma.DefaultConfig(appName, version))
+	api.UseMiddleware(middleware.RequestLogger(log))
 	registerHealthz(api)
 	registerReadyz(api, db)
 	return engine, api
