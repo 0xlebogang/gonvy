@@ -26,9 +26,11 @@ func NewRouter(log *slog.Logger, db postgres.DB) (http.Handler, huma.API) {
 	setupErrors()
 	gin.SetMode(gin.ReleaseMode)
 	engine := gin.New()
-	engine.Use(gin.Recovery())
 	api := humagin.New(engine, huma.DefaultConfig(appName, version))
-	api.UseMiddleware(middleware.RequestLogger(log))
+	api.UseMiddleware(
+		middleware.RequestLogger(log),
+		middleware.Recovery(api, log),
+	)
 	registerHealthz(api)
 	registerReadyz(api, db)
 	return engine, api

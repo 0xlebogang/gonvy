@@ -1,6 +1,9 @@
 package httperr
 
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+)
 
 type details struct {
 	Field string `json:"field"`
@@ -50,4 +53,8 @@ func (a *appError) Error() string {
 		return fmt.Sprintf("[%s]: %s", a.code, a.msg)
 	}
 	return fmt.Sprintf("[%s] %s: %s", a.code, a.msg, a.cause.Error())
+}
+
+func (a *appError) MarshalJSON() ([]byte, error) {
+	return json.Marshal(a.AsResponse())
 }

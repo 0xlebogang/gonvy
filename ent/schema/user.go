@@ -1,10 +1,20 @@
 package schema
 
-import "entgo.io/ent"
+import (
+	"entgo.io/ent"
+	"entgo.io/ent/schema/mixin"
+)
 
 // User holds the schema definition for the User entity.
 type User struct {
 	ent.Schema
+}
+
+func (User) BaseMixin() []ent.Mixin {
+	return []ent.Mixin{
+		BaseMixin{},
+		mixin.Time{},
+	}
 }
 
 // Fields of the User.
