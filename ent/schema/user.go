@@ -2,6 +2,7 @@ package schema
 
 import (
 	"entgo.io/ent"
+	"entgo.io/ent/schema/field"
 	"entgo.io/ent/schema/mixin"
 )
 
@@ -19,7 +20,21 @@ func (User) BaseMixin() []ent.Mixin {
 
 // Fields of the User.
 func (User) Fields() []ent.Field {
-	return nil
+	return []ent.Field{
+		field.String("name").
+			NotEmpty().
+			MinLen(1).
+			MaxLen(100),
+		field.String("email").
+			NotEmpty().
+			MinLen(3).
+			MaxLen(254),
+		field.Bool("email_verified").
+			Default(false),
+		field.Text("image").
+			Optional().
+			Nillable(),
+	}
 }
 
 // Edges of the User.
