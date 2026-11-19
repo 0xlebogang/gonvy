@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourcePerFileMappings">
+    <file url="file://$PROJECT_DIR$/docker/postgres/docker-entrypoint-initdb.d/create_dev_database.sql" value="410e2997-cdc8-4422-93e1-6b52efb924a9" />
+  </component>
+</project>

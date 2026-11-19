@@ -10,6 +10,7 @@ type DB interface {
 	Client() *ent.Client
 	DB() *sql.DB
 	Ping() error
+	Migrate() error
 	Close()
 }
 

@@ -6,7 +6,9 @@ import (
 	"fmt"
 	"time"
 
+	goose "github.com/pressly/goose/v3"
 	"gonvy.internal/ent"
+	"gonvy.internal/ent/migrate/migrations"
 )
 
 type db struct {
@@ -28,6 +30,17 @@ func (d *db) Ping() error {
 	err := d.DB().PingContext(ctx)
 	if err != nil {
 		return fmt.Errorf("ping: %w", err)
+	}
+	return nil
+}
+
+func (d *db) Migrate() error {
+	goose.SetBaseFS(migrations.FS)
+	if err := goose.SetDialect("postgres"); err != nil {
+		return fmt.Errorf("migrate: set dialect: %w", err)
+	}
+	if err := goose.Up(d.DB(), "."); err != nil {
+		return fmt.Errorf("migrate: up: %w", err)
 	}
 	return nil
 }
