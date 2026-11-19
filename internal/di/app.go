@@ -33,7 +33,7 @@ func NewApp(cfg *config.Config, log *slog.Logger) (App, error) {
 	if err != nil {
 		return nil, fmt.Errorf("app: failed to connect to database: %w", err)
 	}
-	r, _ := httpapi.NewRouter(log, db)
+	r := httpapi.NewRouter(log, db)
 	return &app{
 		router: r,
 		db:     db,

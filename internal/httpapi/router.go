@@ -16,7 +16,7 @@ const (
 	version = "0.0.0"
 )
 
-func NewRouter(log *slog.Logger, db postgres.DB) (http.Handler, huma.API) {
+func NewRouter(log *slog.Logger, db postgres.DB) http.Handler {
 	if log == nil {
 		panic("logger is nil")
 	}
@@ -33,5 +33,5 @@ func NewRouter(log *slog.Logger, db postgres.DB) (http.Handler, huma.API) {
 	)
 	registerHealthz(api)
 	registerReadyz(api, db)
-	return engine, api
+	return engine
 }
