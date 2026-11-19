@@ -52,13 +52,3 @@ func (p postgres) Connect() (DB, error) {
 	}
 	return p.db, nil
 }
-
-func (p postgres) Ping() error {
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
-	defer cancel()
-	err := p.db.DB().PingContext(ctx)
-	if err != nil {
-		return fmt.Errorf("p.db.DB().PingContext: %w", err)
-	}
-	return nil
-}

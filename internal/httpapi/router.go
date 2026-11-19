@@ -22,9 +22,12 @@ func NewRouter(log *slog.Logger, db postgres.DB) (http.Handler, huma.API) {
 	if db == nil {
 		panic("db is nil")
 	}
+	setupErrors()
 	gin.SetMode(gin.ReleaseMode)
 	engine := gin.New()
 	engine.Use(gin.Recovery())
 	api := humagin.New(engine, huma.DefaultConfig(appName, version))
+	registerHealthz(api)
+	registerReadyz(api, db)
 	return engine, api
 }

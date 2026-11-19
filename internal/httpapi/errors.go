@@ -20,6 +20,6 @@ func setupErrors() {
 		} else if len(errs) > 0 {
 			cause = errors.Join(errs...)
 		}
-		return httperr.FromStatus(status, cause)
+		return httperr.InternalServerError(cause)
 	}
 }
