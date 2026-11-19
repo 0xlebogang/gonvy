@@ -1,0 +1,11 @@
+.env*
+!.env.example
+!.env.prod
+ent/**/*.go
+!ent/schema/*.go
+!ent/migrate/main.go
+!ent/migrate/migrations/embed.go
+!ent/migrate/migrations/*.sql
+!ent/migrate/migrations/atlas.sum
+node_modules/
+.cursor/
