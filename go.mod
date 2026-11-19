@@ -1,6 +1,8 @@
 module gonvy.internal
 
-go 1.27.4
+go 1.26.10
+
+toolchain go1.27.4
 
 require (
 	entgo.io/ent v0.14.6
