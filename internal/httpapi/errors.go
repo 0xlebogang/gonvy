@@ -20,6 +20,11 @@ func setupErrors() {
 		} else if len(errs) > 0 {
 			cause = errors.Join(errs...)
 		}
-		return httperr.InternalServerError(cause)
+		return httperr.InternalServerError(
+			map[bool]error{
+				true:  cause,
+				false: errors.New("unexpected error"),
+			}[cause != nil],
+		)
 	}
 }
