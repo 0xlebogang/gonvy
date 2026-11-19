@@ -35,7 +35,7 @@ func Recovery(api huma.API, log *slog.Logger) func(ctx huma.Context, next func(c
 		if paniced {
 			return
 		}
-		if status := ctx.Status(); status != http.StatusInternalServerError {
+		if status := ctx.Status(); status >= http.StatusInternalServerError {
 			log.Error("server_error",
 				"method", ctx.Method(),
 				"path", ctx.URL().Path,
