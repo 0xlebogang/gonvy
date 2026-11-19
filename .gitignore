@@ -2,6 +2,7 @@
 !.env.example
 !.env.prod
 ent/**/*.go
+!ent/generate.go
 !ent/schema/*.go
 !ent/migrate/main.go
 !ent/migrate/migrations/embed.go
