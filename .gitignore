@@ -9,3 +9,4 @@ ent/**/*.go
 !ent/migrate/migrations/atlas.sum
 node_modules/
 .cursor/
+bin/
