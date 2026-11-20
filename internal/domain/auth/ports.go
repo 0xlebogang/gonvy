@@ -3,7 +3,7 @@ package auth
 import (
 	"time"
 
-	"gonvy.internal/internal/domain/users"
+	"gonvy.internal/ent"
 )
 
 type CreateSessionCmd struct {
@@ -14,15 +14,9 @@ type CreateSessionCmd struct {
 	UserAgent *string
 }
 
-type Session struct {
-	ID        string
-	Token     string
-	ExpiresAt time.Time
-}
-
 type RegisterResult struct {
-	User    users.RegisteredUser
-	Session Session
+	User    ent.User
+	Session ent.Session
 }
 
 type registerOutput struct {

@@ -30,7 +30,7 @@ func newService(repo Repository, userSvc users.Service) Service {
 }
 
 func (s service) RegisterUserAccount(ctx context.Context, in *users.RegisterInput) (*RegisterResult, error) {
-	user, err := s.userSvc.RegisterUserAccount(ctx, in)
+	userRec, err := s.userSvc.RegisterUserAccount(ctx, in)
 	if err != nil {
 		return nil, err
 	}
@@ -38,8 +38,8 @@ func (s service) RegisterUserAccount(ctx context.Context, in *users.RegisterInpu
 	if err != nil {
 		return nil, err
 	}
-	sess, err := s.repo.CreateSession(ctx, &CreateSessionCmd{
-		UserID:    user.UserID,
+	sessionRec, err := s.repo.CreateSession(ctx, &CreateSessionCmd{
+		UserID:    userRec.User.ID,
 		Token:     token,
 		ExpiresAt: time.Now().UTC().Add(sessionTTL),
 	})
@@ -47,7 +47,7 @@ func (s service) RegisterUserAccount(ctx context.Context, in *users.RegisterInpu
 		return nil, fmt.Errorf("create session after registration: %w", err)
 	}
 	return &RegisterResult{
-		User:    *user,
-		Session: *sess,
+		User:    userRec.User,
+		Session: *sessionRec,
 	}, nil
 }

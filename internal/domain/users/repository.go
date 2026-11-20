@@ -3,7 +3,6 @@ package users
 import (
 	"context"
 	"fmt"
-	"time"
 
 	"gonvy.internal/ent"
 )
@@ -25,10 +24,6 @@ func NewRepository(db *ent.Client) Repository {
 		db:   db,
 		inTx: false,
 	}
-}
-
-func newTxRepository(tx *ent.Client) *repository {
-	return &repository{db: tx, inTx: true}
 }
 
 func (r *repository) runInTx(ctx context.Context, fn func(txRepo *repository) error) error {
@@ -82,21 +77,16 @@ func (r *repository) createUserTx(ctx context.Context, cmd *RegisterUserCmd) (*R
 		}
 		return nil, fmt.Errorf("create user: %w", err)
 	}
-
 	a, err := r.db.Account.Create().
 		SetUser(u).
-		SetAccountID(fmt.Sprintf("test-acc-id-%s", time.Now().String())).
 		SetProviderID("credential").
 		SetNillablePassword(&cmd.Password).
 		Save(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("create account: %w", err)
 	}
-
 	return &RegisteredUser{
-		UserID:    u.ID,
-		AccountID: a.AccountID,
-		Name:      u.Name,
-		Email:     u.Email,
+		User:    *u,
+		Account: *a,
 	}, nil
 }
