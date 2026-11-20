@@ -36,7 +36,7 @@ func (h *handler) Mount(api huma.API) {
 	}, h.register)
 }
 
-func (h *handler) register(ctx context.Context, in *users.RegisterInput) (*users.RegisterOutput, error) {
+func (h *handler) register(ctx context.Context, in *users.RegisterInput) (*registerOutput, error) {
 	out, err := h.svc.RegisterUserAccount(ctx, in)
 	if err != nil {
 		if errors.Is(err, users.ErrDuplicateEmail) {
@@ -44,6 +44,12 @@ func (h *handler) register(ctx context.Context, in *users.RegisterInput) (*users
 		}
 		return nil, err
 	}
-	resp := &users.RegisterOutput{Body: *out}
+	resp := &registerOutput{}
+	resp.Body.UserID = out.User.UserID
+	resp.Body.AccountID = out.User.AccountID
+	resp.Body.Name = out.User.Name
+	resp.Body.Email = out.User.Email
+	resp.Body.Token = out.Session.Token
+	resp.Body.ExpiresAt = out.Session.ExpiresAt
 	return resp, nil
 }
