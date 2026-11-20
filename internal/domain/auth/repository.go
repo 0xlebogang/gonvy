@@ -8,7 +8,7 @@ import (
 )
 
 type Repository interface {
-	CreateSession(ctx context.Context, cmd *CreateSessionCmd) (*Session, error)
+	CreateSession(ctx context.Context, cmd *CreateSessionCmd) (*ent.Session, error)
 }
 
 type repository struct {
@@ -22,8 +22,8 @@ func newRepository(db *ent.Client) Repository {
 	return &repository{db: db}
 }
 
-func (r *repository) CreateSession(ctx context.Context, cmd *CreateSessionCmd) (*Session, error) {
-	s, err := r.db.Session.Create().
+func (r *repository) CreateSession(ctx context.Context, cmd *CreateSessionCmd) (*ent.Session, error) {
+	rec, err := r.db.Session.Create().
 		SetUserID(cmd.UserID).
 		SetToken(cmd.Token).
 		SetExpiresAt(cmd.ExpiresAt).
@@ -33,9 +33,5 @@ func (r *repository) CreateSession(ctx context.Context, cmd *CreateSessionCmd) (
 	if err != nil {
 		return nil, fmt.Errorf("create session: %w", err)
 	}
-	return &Session{
-		ID:        s.ID,
-		Token:     s.Token,
-		ExpiresAt: s.ExpiresAt,
-	}, nil
+	return rec, nil
 }
