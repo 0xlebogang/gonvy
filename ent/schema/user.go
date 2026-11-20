@@ -12,7 +12,7 @@ type User struct {
 	ent.Schema
 }
 
-func (User) BaseMixin() []ent.Mixin {
+func (User) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		BaseMixin{},
 		mixin.Time{},
