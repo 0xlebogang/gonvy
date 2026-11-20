@@ -1,6 +1,8 @@
 package users
 
-import "strings"
+import (
+	"strings"
+)
 
 type RegisterUserCmd struct {
 	Name     string
@@ -11,8 +13,6 @@ type RegisterUserCmd struct {
 func (cmd *RegisterUserCmd) normalize() {
 	cmd.Name = strings.TrimSpace(cmd.Name)
 	cmd.Email = strings.TrimSpace(strings.ToLower(cmd.Email))
-	// Replace with password hashing logic
-	cmd.Password = strings.TrimSpace(cmd.Password)
 }
 
 type RegisteredUser struct {
