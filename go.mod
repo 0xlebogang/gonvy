@@ -4,6 +4,7 @@ go 1.26.10
 
 require (
 	entgo.io/ent v0.14.7-0.20261014065818-8037bc89bcab
+	github.com/alexedwards/argon2id v1.0.0
 	github.com/danielgtaylor/huma/v2 v2.41.0
 	github.com/gin-gonic/gin v1.12.0
 	github.com/jackc/pgx/v5 v5.13.0
@@ -16,7 +17,6 @@ require (
 require (
 	ariga.io/atlas v1.4.0 // indirect
 	github.com/agext/levenshtein v1.2.3 // indirect
-	github.com/alexedwards/argon2id v1.0.0 // indirect
 	github.com/apparentlymart/go-textseg/v15 v15.0.0 // indirect
 	github.com/apparentlymart/go-textseg/v17 v17.0.1 // indirect
 	github.com/bmatcuk/doublestar v1.3.4 // indirect
