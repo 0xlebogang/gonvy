@@ -17,7 +17,7 @@ func (cmd *RegisterUserCmd) normalize() {
 	cmd.Email = strings.TrimSpace(strings.ToLower(cmd.Email))
 }
 
-type RegisteredUser struct {
+type RegisterResult struct {
 	User    ent.User
 	Account ent.Account
 }
