@@ -20,8 +20,9 @@ func BuildModule(db *ent.Client) Module {
 	}
 	userRepo := users.NewRepository(db)
 	userSvc := users.NewService(userRepo)
-	svc := newService(userSvc)
-	return &module{handlers: newhandler(svc)}
+	authRepo := newRepository(db)
+	authSvc := newService(authRepo, userSvc)
+	return &module{handlers: newhandler(authSvc)}
 }
 
 func (m *module) Register(api huma.API) {
