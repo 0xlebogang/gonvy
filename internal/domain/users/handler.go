@@ -55,5 +55,12 @@ func (h *handler) register(ctx context.Context, in *registerInput) (*registerOut
 		}
 		return nil, err
 	}
-	return &registerOutput{Body: *out}, nil
+	resp := &registerOutput{}
+	resp.Body = RegisteredUser{
+		UserID:    out.UserID,
+		AccountID: out.AccountID,
+		Name:      out.Name,
+		Email:     out.Email,
+	}
+	return resp, nil
 }
