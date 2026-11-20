@@ -7,6 +7,7 @@ import (
 	"github.com/danielgtaylor/huma/v2"
 	"github.com/danielgtaylor/huma/v2/adapters/humagin"
 	"github.com/gin-gonic/gin"
+	"gonvy.internal/internal/domain/auth"
 	"gonvy.internal/internal/domain/users"
 	"gonvy.internal/internal/httpapi/middleware"
 	"gonvy.internal/internal/persistance/postgres"
@@ -25,7 +26,7 @@ func NewRouter(log *slog.Logger, db postgres.DB) http.Handler {
 		panic("db is nil")
 	}
 	setupErrors()
-	//gin.SetMode(gin.ReleaseMode)
+	gin.SetMode(gin.ReleaseMode)
 	engine := gin.New()
 	if gin.Mode() != gin.ReleaseMode {
 		engine.Use(gin.Logger(), gin.Recovery())
@@ -37,6 +38,8 @@ func NewRouter(log *slog.Logger, db postgres.DB) http.Handler {
 	registerHealthz(api)
 	registerReadyz(api, db)
 	users.BuildModule(db.Client()).
+		Register(api)
+	auth.BuildModule(db.Client()).
 		Register(api)
 	return engine
 }
