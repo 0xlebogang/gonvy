@@ -11,7 +11,8 @@ import (
 const sessionTTL = 30 * 24 * time.Hour
 
 type Service interface {
-	RegisterUserAccount(ctx context.Context, in *users.RegisterInput) (*RegisterResult, error)
+	RegisterUserAccount(ctx context.Context, in *users.RegisterInput) (*registerResult, error)
+	Login(ctx context.Context, in *loginInput) (*loginResult, error)
 }
 
 type service struct {
@@ -29,7 +30,7 @@ func newService(repo Repository, userSvc users.Service) Service {
 	return &service{repo: repo, userSvc: userSvc}
 }
 
-func (s service) RegisterUserAccount(ctx context.Context, in *users.RegisterInput) (*RegisterResult, error) {
+func (s service) RegisterUserAccount(ctx context.Context, in *users.RegisterInput) (*registerResult, error) {
 	userRec, err := s.userSvc.RegisterUserAccount(ctx, in)
 	if err != nil {
 		return nil, err
@@ -46,8 +47,17 @@ func (s service) RegisterUserAccount(ctx context.Context, in *users.RegisterInpu
 	if err != nil {
 		return nil, fmt.Errorf("create session after registration: %w", err)
 	}
-	return &RegisterResult{
+	return &registerResult{
 		User:    userRec.User,
 		Session: *sessionRec,
 	}, nil
+}
+
+func (s *service) Login(ctx context.Context, in *loginInput) (*loginResult, error) {
+	// Get user by email
+	// Get user's linked credential account
+	// Check provided password against password hash
+	// create session if passwords match, otherwise return unauthorized error
+	// return login result
+	return nil, nil
 }

@@ -14,7 +14,7 @@ type CreateSessionCmd struct {
 	UserAgent *string
 }
 
-type RegisterResult struct {
+type registerResult struct {
 	User    ent.User
 	Session ent.Session
 }
@@ -29,3 +29,12 @@ type registerOutput struct {
 		ExpiresAt time.Time `json:"expiresAt"`
 	}
 }
+
+type loginInput struct {
+	Body struct {
+		Email    string `json:"email"`
+		Password string `json:"password"`
+	}
+}
+
+type loginResult = registerResult
