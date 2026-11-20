@@ -24,7 +24,8 @@ func (Account) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("account_id").
 			Unique().
-			NotEmpty().
+			Optional().
+			Nillable().
 			MinLen(1).
 			MaxLen(255),
 		field.String("provider_id").
