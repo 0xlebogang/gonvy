@@ -11,8 +11,8 @@ import (
 const sessionTTL = 30 * 24 * time.Hour
 
 type Service interface {
-	RegisterUserAccount(ctx context.Context, in *users.RegisterInput) (*RegisterResult, error)
-	Login(ctx context.Context, in *loginInput) (*LoginResult, error)
+	RegisterUserAccount(ctx context.Context, in *users.RegisterInput) (*registerResult, error)
+	Login(ctx context.Context, in *loginInput) (*loginResult, error)
 }
 
 type service struct {
@@ -53,7 +53,7 @@ func (s service) RegisterUserAccount(ctx context.Context, in *users.RegisterInpu
 	}, nil
 }
 
-func (s service) Login(ctx context.Context, in *loginInput) (*LoginResult, error) {
+func (s service) Login(ctx context.Context, in *loginInput) (*loginResult, error) {
 	//	Get user by Email
 	// Compare user's password hash with provided password
 	//	Create new session if password matches, otherwise return unauthorized domain error
