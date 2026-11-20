@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/alexedwards/argon2id"
 	"gonvy.internal/internal/domain/users"
 )
 
@@ -30,7 +31,7 @@ func newService(repo Repository, userSvc users.Service) Service {
 	return &service{repo: repo, userSvc: userSvc}
 }
 
-func (s service) RegisterUserAccount(ctx context.Context, in *users.RegisterInput) (*registerResult, error) {
+func (s *service) RegisterUserAccount(ctx context.Context, in *users.RegisterInput) (*registerResult, error) {
 	userRec, err := s.userSvc.RegisterUserAccount(ctx, in)
 	if err != nil {
 		return nil, err
@@ -53,9 +54,33 @@ func (s service) RegisterUserAccount(ctx context.Context, in *users.RegisterInpu
 	}, nil
 }
 
-func (s service) Login(ctx context.Context, in *loginInput) (*loginResult, error) {
-	//	Get user by Email
-	// Compare user's password hash with provided password
-	//	Create new session if password matches, otherwise return unauthorized domain error
-	return nil, nil
+func (s *service) Login(ctx context.Context, in *loginInput) (*loginResult, error) {
+	u, err := s.repo.FindUserByEmail(ctx, in.Body.Email)
+	if err != nil {
+		return nil, err
+	}
+	hash := u.Edges.Accounts[0].Password
+	if ok, err := argon2id.ComparePasswordAndHash(in.Body.Password, *hash); err != nil {
+		return nil, err
+	} else if !ok {
+		return nil, ErrUnauthorized
+	}
+	token, err := newSession()
+	if err != nil {
+		return nil, err
+	}
+	cmd := &CreateSessionCmd{
+		UserID:    u.ID,
+		ExpiresAt: time.Now().UTC().Add(sessionTTL),
+		Token:     hashToken(token),
+	}
+	_, err = s.repo.CreateSession(ctx, cmd)
+	if err != nil {
+		return nil, err
+	}
+	return &loginResult{
+		Token: token,
+		Email: u.Email,
+		Name:  u.Name,
+	}, nil
 }

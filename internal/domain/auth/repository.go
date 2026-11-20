@@ -11,7 +11,7 @@ import (
 
 type Repository interface {
 	CreateSession(ctx context.Context, cmd *CreateSessionCmd) (*ent.Session, error)
-	FindAccountByEmail(ctx context.Context, email string) (*ent.Account, error)
+	FindUserByEmail(ctx context.Context, email string) (*ent.User, error)
 }
 
 type repository struct {
@@ -39,17 +39,18 @@ func (r *repository) CreateSession(ctx context.Context, cmd *CreateSessionCmd) (
 	return rec, nil
 }
 
-func (r *repository) FindAccountByEmail(ctx context.Context, email string) (*ent.Account, error) {
-	acc, err := r.db.Account.Query().
+func (r *repository) FindUserByEmail(ctx context.Context, email string) (*ent.User, error) {
+	u, err := r.db.User.Query().
 		Where(
-			account.HasUserWith(user.EmailEQ(email)),
+			user.EmailEQ(email),
+			user.HasAccountsWith(account.ProviderEQ(account.DefaultProvider)),
 		).
 		Only(ctx)
 	if err != nil {
 		if ent.IsNotFound(err) {
-			return nil, ErrAccountNotFound
+			return nil, ErrUserNotFound
 		}
-		return nil, fmt.Errorf("find account: %w", err)
+		return nil, fmt.Errorf("find user: %w", err)
 	}
-	return acc, nil
+	return u, nil
 }

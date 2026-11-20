@@ -13,8 +13,7 @@ func newSession() (string, error) {
 		return "", fmt.Errorf("generate session token: %w", err)
 	}
 	token := hex.EncodeToString(b)
-	hash := hashToken(token)
-	return hash, nil
+	return token, nil
 }
 
 func hashToken(token string) string {

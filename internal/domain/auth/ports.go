@@ -37,4 +37,8 @@ type loginInput struct {
 	}
 }
 
-type loginResult = registerResult
+type loginResult struct {
+	Token string
+	Email string
+	Name  string
+}
