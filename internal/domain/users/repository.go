@@ -73,6 +73,9 @@ func (r *repository) createUserTx(ctx context.Context, cmd *RegisterUserCmd) (*R
 		SetEmail(cmd.Email).
 		Save(ctx)
 	if err != nil {
+		if ent.IsConstraintError(err) {
+			return nil, ErrDuplicateEmail
+		}
 		return nil, fmt.Errorf("create user: %w", err)
 	}
 
