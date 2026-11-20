@@ -9,18 +9,22 @@ import (
 	"gonvy.internal/internal/httperr"
 )
 
-type Handler struct {
+type Handler interface {
+	Mount(api huma.API)
+}
+
+type handler struct {
 	svc Service
 }
 
-func NewHandler(svc Service) *Handler {
+func Newhandler(svc Service) Handler {
 	if svc == nil {
 		panic("service is nil")
 	}
-	return &Handler{svc: svc}
+	return &handler{svc: svc}
 }
 
-func (h *Handler) Mount(api huma.API) {
+func (h *handler) Mount(api huma.API) {
 	grp := huma.NewGroup(api, "/users")
 	huma.Register(grp, huma.Operation{
 		OperationID: "users:register",
@@ -43,7 +47,7 @@ type registerOutput struct {
 	Body RegisteredUser
 }
 
-func (h *Handler) register(ctx context.Context, in *registerInput) (*registerOutput, error) {
+func (h *handler) register(ctx context.Context, in *registerInput) (*registerOutput, error) {
 	out, err := h.svc.RegisterUserAccount(ctx, in)
 	if err != nil {
 		if errors.Is(err, ErrDuplicateEmail) {
