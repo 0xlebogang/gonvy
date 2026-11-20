@@ -6,10 +6,12 @@ import (
 	"time"
 
 	"gonvy.internal/ent"
+	"gonvy.internal/ent/user"
 )
 
 type Repository interface {
 	CreateUser(ctx context.Context, cmd *RegisterUserCmd) (*RegisteredUser, error)
+	FindUserByEmail(ctx context.Context, email string) (*RegisteredUser, error)
 }
 
 type repository struct {
@@ -99,4 +101,21 @@ func (r *repository) createUserTx(ctx context.Context, cmd *RegisterUserCmd) (*R
 		Name:      u.Name,
 		Email:     u.Email,
 	}, nil
+}
+
+func (r *repository) FindUserByEmail(ctx context.Context, email string) (*RegisteredUser, error) {
+	out, err := r.db.User.Query().
+		Where(user.EmailEQ(email)).
+		Only(ctx)
+	if err != nil {
+		if ent.IsNotFound(err) {
+			return nil, ErrUserNotFound
+		}
+	}
+	u := &RegisteredUser{
+		UserID: out.ID,
+		Name:   out.Name,
+		Email:  out.Email,
+	}
+	return u, nil
 }
