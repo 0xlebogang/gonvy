@@ -1,26 +1,28 @@
 package auth
 
-import (
-	"context"
+import "time"
 
-	"gonvy.internal/internal/domain/users"
-)
-
-type Service interface {
-	RegisterUserAccount(ctx context.Context, in *users.RegisterInput) (*users.RegisteredUser, error)
+type CreateSessionCmd struct {
+	UserID    string
+	Token     string
+	ExpiresAt time.Time
+	IPAddress *string
+	UserAgent *string
 }
 
-type service struct {
-	userSvc users.Service
+type Session struct {
+	ID        string
+	Token     string
+	ExpiresAt time.Time
 }
 
-func newService(userSvc users.Service) Service {
-	if userSvc == nil {
-		panic("user service is nil")
+type registerOutput struct {
+	Body struct {
+		UserID    string    `json:"userId"`
+		AccountID string    `json:"accountId"`
+		Name      string    `json:"name"`
+		Email     string    `json:"email"`
+		Token     string    `json:"token"`
+		ExpiresAt time.Time `json:"expiresAt"`
 	}
-	return &service{userSvc: userSvc}
-}
-
-func (s service) RegisterUserAccount(ctx context.Context, in *users.RegisterInput) (*users.RegisteredUser, error) {
-	return s.userSvc.RegisterUserAccount(ctx, in)
 }
