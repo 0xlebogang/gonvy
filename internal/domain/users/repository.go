@@ -9,7 +9,7 @@ import (
 )
 
 type Repository interface {
-	CreateUser(ctx context.Context, cmd *CreateUserCmd) (*CreatedUser, error)
+	CreateUser(ctx context.Context, cmd *RegisterUserCmd) (*RegisteredUser, error)
 }
 
 type repository struct {
@@ -51,9 +51,8 @@ func (r *repository) runInTx(ctx context.Context, fn func(txRepo *repository) er
 	return nil
 }
 
-func (r *repository) CreateUser(ctx context.Context, cmd *CreateUserCmd) (*CreatedUser, error) {
-	cmd.normalize()
-	var out *CreatedUser
+func (r *repository) CreateUser(ctx context.Context, cmd *RegisterUserCmd) (*RegisteredUser, error) {
+	var out *RegisteredUser
 	err := r.runInTx(ctx, func(txRepo *repository) error {
 		created, err := txRepo.createUserTx(ctx, cmd)
 		if err != nil {
@@ -68,7 +67,7 @@ func (r *repository) CreateUser(ctx context.Context, cmd *CreateUserCmd) (*Creat
 	return out, nil
 }
 
-func (r *repository) createUserTx(ctx context.Context, cmd *CreateUserCmd) (*CreatedUser, error) {
+func (r *repository) createUserTx(ctx context.Context, cmd *RegisterUserCmd) (*RegisteredUser, error) {
 	u, err := r.db.User.Create().
 		SetName(cmd.Name).
 		SetEmail(cmd.Email).
@@ -87,7 +86,7 @@ func (r *repository) createUserTx(ctx context.Context, cmd *CreateUserCmd) (*Cre
 		return nil, fmt.Errorf("create account: %w", err)
 	}
 
-	return &CreatedUser{
+	return &RegisteredUser{
 		UserID:    u.ID,
 		AccountID: a.AccountID,
 		Name:      u.Name,
