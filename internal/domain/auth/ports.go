@@ -14,8 +14,11 @@ type service struct {
 	userSvc users.Service
 }
 
-func newService() Service {
-	return &service{}
+func newService(userSvc users.Service) Service {
+	if userSvc == nil {
+		panic("user service is nil")
+	}
+	return &service{userSvc: userSvc}
 }
 
 func (s service) RegisterUserAccount(ctx context.Context, in *users.RegisterInput) (*users.RegisteredUser, error) {

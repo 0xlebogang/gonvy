@@ -18,7 +18,7 @@ type handler struct {
 	svc Service
 }
 
-func Newhandler(svc Service) Handler {
+func newhandler(svc Service) Handler {
 	if svc == nil {
 		panic("service is nil")
 	}
