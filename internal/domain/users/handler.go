@@ -35,19 +35,7 @@ func (h *handler) Mount(api huma.API) {
 	}, h.register)
 }
 
-type registerInput struct {
-	Body struct {
-		Name     string `json:"name" minLength:"1" maxLength:"100"`
-		Email    string `json:"email"`
-		Password string `json:"password"`
-	}
-}
-
-type registerOutput struct {
-	Body RegisteredUser
-}
-
-func (h *handler) register(ctx context.Context, in *registerInput) (*registerOutput, error) {
+func (h *handler) register(ctx context.Context, in *RegisterInput) (*RegisterOutput, error) {
 	out, err := h.svc.RegisterUserAccount(ctx, in)
 	if err != nil {
 		if errors.Is(err, ErrDuplicateEmail) {
@@ -55,7 +43,7 @@ func (h *handler) register(ctx context.Context, in *registerInput) (*registerOut
 		}
 		return nil, err
 	}
-	resp := &registerOutput{}
+	resp := &RegisterOutput{}
 	resp.Body = RegisteredUser{
 		UserID:    out.UserID,
 		AccountID: out.AccountID,

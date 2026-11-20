@@ -21,3 +21,15 @@ type RegisteredUser struct {
 	Name      string
 	Email     string
 }
+
+type RegisterInput struct {
+	Body struct {
+		Name     string `json:"name" minLength:"1" maxLength:"100"`
+		Email    string `json:"email"`
+		Password string `json:"password"`
+	}
+}
+
+type RegisterOutput struct {
+	Body RegisteredUser
+}
