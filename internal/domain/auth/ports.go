@@ -14,7 +14,7 @@ type CreateSessionCmd struct {
 	UserAgent *string
 }
 
-type RegisterResult struct {
+type registerResult struct {
 	User    ent.User
 	Session ent.Session
 }
@@ -32,18 +32,9 @@ type registerOutput struct {
 
 type loginInput struct {
 	Body struct {
-		Email    string `json:"email" minLength:"3" maxLength:"254" format:"email"`
-		Password string `json:"password" minLength:"8" maxLength:"128" format:"alphannum"`
+		Email    string `json:"email"`
+		Password string `json:"password"`
 	}
 }
 
-type User struct {
-	ID    string
-	Name  string
-	Email string
-}
-
-type LoginResult struct {
-	User    User
-	Session Session
-}
+type loginResult = registerResult
