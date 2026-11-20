@@ -28,11 +28,12 @@ func newhandler(svc Service) Handler {
 func (h *handler) Mount(api huma.API) {
 	grp := huma.NewGroup(api, "/auth")
 	huma.Register(grp, huma.Operation{
-		OperationID: "auth:register",
-		Method:      http.MethodPost,
-		Path:        "/register",
-		Summary:     "Register a user account",
-		Tags:        []string{"Auth"},
+		OperationID:   "auth:register",
+		Method:        http.MethodPost,
+		Path:          "/register",
+		Summary:       "Register a user account",
+		Tags:          []string{"Auth"},
+		DefaultStatus: http.StatusCreated,
 	}, h.register)
 }
 
