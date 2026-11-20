@@ -1,6 +1,10 @@
 package auth
 
-import "time"
+import (
+	"time"
+
+	"gonvy.internal/internal/domain/users"
+)
 
 type CreateSessionCmd struct {
 	UserID    string
@@ -14,6 +18,11 @@ type Session struct {
 	ID        string
 	Token     string
 	ExpiresAt time.Time
+}
+
+type RegisterResult struct {
+	User    users.RegisteredUser
+	Session Session
 }
 
 type registerOutput struct {
