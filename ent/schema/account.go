@@ -28,8 +28,9 @@ func (Account) Fields() []ent.Field {
 			Nillable().
 			MinLen(1).
 			MaxLen(255),
-		field.String("provider_id").
-			NotEmpty(),
+		field.Enum("provider").
+			Values("credential").
+			Default("credential"),
 		field.String("access_token").
 			Optional().
 			Nillable(),

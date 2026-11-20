@@ -79,7 +79,6 @@ func (r *repository) createUserTx(ctx context.Context, cmd *RegisterUserCmd) (*R
 	}
 	a, err := r.db.Account.Create().
 		SetUser(u).
-		SetProviderID("credential").
 		SetNillablePassword(&cmd.Password).
 		Save(ctx)
 	if err != nil {
