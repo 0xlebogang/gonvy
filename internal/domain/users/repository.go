@@ -45,6 +45,10 @@ func (r *repository) runInTx(ctx context.Context, fn func(txRepo *repository) er
 			panic(v)
 		}
 	}()
+	err = fn(r)
+	if err != nil {
+		return fmt.Errorf("users: run tx: %w", err)
+	}
 	if err := tx.Commit(); err != nil {
 		return fmt.Errorf("users: commit tx: %w", err)
 	}
