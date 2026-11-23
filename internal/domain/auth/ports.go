@@ -4,7 +4,7 @@ import (
 	"strings"
 	"time"
 
-	"gonvy.internal/internal/domain/users"
+	"gonvy.internal/ent"
 )
 
 type CreateSessionCmd struct {

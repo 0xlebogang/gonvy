@@ -54,8 +54,8 @@ func (h *handler) register(ctx context.Context, in *users.RegisterInput) (*regis
 		return nil, err
 	}
 	resp := &registerOutput{}
-	resp.Body.UserID = out.User.UserID
-	resp.Body.AccountID = out.User.AccountID
+	resp.Body.UserID = out.User.ID
+	resp.Body.AccountID = out.User.ID
 	resp.Body.Name = out.User.Name
 	resp.Body.Email = out.User.Email
 	resp.Body.Token = out.Session.Token

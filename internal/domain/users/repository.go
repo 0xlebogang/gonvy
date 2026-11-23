@@ -3,7 +3,6 @@ package users
 import (
 	"context"
 	"fmt"
-	"time"
 
 	"gonvy.internal/ent"
 	"gonvy.internal/ent/account"
@@ -30,10 +29,6 @@ func NewRepository(db *ent.Client) Repository {
 	}
 }
 
-func newTxRepository(tx *ent.Client) *repository {
-	return &repository{db: tx, inTx: true}
-}
-
 func (r *repository) runInTx(ctx context.Context, fn func(txRepo *repository) error) error {
 	if r.inTx {
 		return fn(r)
@@ -58,8 +53,8 @@ func (r *repository) runInTx(ctx context.Context, fn func(txRepo *repository) er
 	return nil
 }
 
-func (r *repository) CreateUser(ctx context.Context, cmd *RegisterUserCmd) (*RegisteredUser, error) {
-	var out *RegisteredUser
+func (r *repository) CreateUser(ctx context.Context, cmd *RegisterUserCmd) (*RegisterResult, error) {
+	var out *RegisterResult
 	err := r.runInTx(ctx, func(txRepo *repository) error {
 		created, err := txRepo.createUserTx(ctx, cmd)
 		if err != nil {
@@ -74,7 +69,7 @@ func (r *repository) CreateUser(ctx context.Context, cmd *RegisterUserCmd) (*Reg
 	return out, nil
 }
 
-func (r *repository) createUserTx(ctx context.Context, cmd *RegisterUserCmd) (*RegisteredUser, error) {
+func (r *repository) createUserTx(ctx context.Context, cmd *RegisterUserCmd) (*RegisterResult, error) {
 	u, err := r.db.User.Create().
 		SetName(cmd.Name).
 		SetEmail(cmd.Email).
@@ -85,22 +80,17 @@ func (r *repository) createUserTx(ctx context.Context, cmd *RegisterUserCmd) (*R
 		}
 		return nil, fmt.Errorf("create user: %w", err)
 	}
-
 	a, err := r.db.Account.Create().
 		SetUser(u).
-		SetAccountID(fmt.Sprintf("test-acc-id-%s", time.Now().String())).
 		SetProviderID("credential").
 		SetNillablePassword(&cmd.Password).
 		Save(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("create account: %w", err)
 	}
-
-	return &RegisteredUser{
-		UserID:    u.ID,
-		AccountID: a.AccountID,
-		Name:      u.Name,
-		Email:     u.Email,
+	return &RegisterResult{
+		User:    *u,
+		Account: *a,
 	}, nil
 }
 

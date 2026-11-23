@@ -50,8 +50,8 @@ func (s *service) RegisterUserAccount(ctx context.Context, in *users.RegisterInp
 	if err != nil {
 		return nil, err
 	}
-	sess, err := s.repo.CreateSession(ctx, &CreateSessionCmd{
-		UserID:    user.UserID,
+	sessionRec, err := s.repo.CreateSession(ctx, &CreateSessionCmd{
+		UserID:    userRec.User.ID,
 		Token:     token,
 		ExpiresAt: time.Now().UTC().Add(sessionTTL),
 	})

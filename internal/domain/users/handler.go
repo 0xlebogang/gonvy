@@ -44,11 +44,9 @@ func (h *handler) register(ctx context.Context, in *RegisterInput) (*RegisterOut
 		return nil, err
 	}
 	resp := &RegisterOutput{}
-	resp.Body = RegisteredUser{
-		UserID:    out.UserID,
-		AccountID: out.AccountID,
-		Name:      out.Name,
-		Email:     out.Email,
-	}
+	resp.Body.UserID = out.User.ID
+	resp.Body.AccountID = out.Account.ID
+	resp.Body.Name = out.User.Name
+	resp.Body.Email = out.User.Email
 	return resp, nil
 }

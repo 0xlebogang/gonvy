@@ -2,6 +2,8 @@ package users
 
 import (
 	"strings"
+
+	"gonvy.internal/ent"
 )
 
 type RegisterUserCmd struct {
@@ -15,21 +17,24 @@ func (cmd *RegisterUserCmd) Normalize() {
 	cmd.Email = strings.TrimSpace(strings.ToLower(cmd.Email))
 }
 
-type RegisteredUser struct {
-	UserID    string
-	AccountID string
-	Name      string
-	Email     string
+type RegisterResult struct {
+	User    ent.User
+	Account ent.Account
 }
 
 type RegisterInput struct {
 	Body struct {
 		Name     string `json:"name" minLength:"1" maxLength:"100"`
-		Email    string `json:"email"`
-		Password string `json:"password"`
+		Email    string `json:"email" format:"email"`
+		Password string `json:"password" minLength:"8" maxLength:"128"`
 	}
 }
 
 type RegisterOutput struct {
-	Body RegisteredUser
+	Body struct {
+		UserID    string `json:"user_id"`
+		AccountID string `json:"account_id"`
+		Name      string `json:"name"`
+		Email     string `json:"email"`
+	}
 }
