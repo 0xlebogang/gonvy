@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/alexedwards/argon2id"
 	"gonvy.internal/internal/domain/users"
 )
 
@@ -16,22 +17,32 @@ type Service interface {
 }
 
 type service struct {
-	repo    Repository
-	userSvc users.Service
+	repo     Repository
+	userRepo users.Repository
 }
 
-func newService(repo Repository, userSvc users.Service) Service {
+func newService(repo Repository, userRepo users.Repository) Service {
 	if repo == nil {
 		panic("repo is nil")
 	}
-	if userSvc == nil {
-		panic("user service is nil")
+	if userRepo == nil {
+		panic("user repo is nil")
 	}
-	return &service{repo: repo, userSvc: userSvc}
+	return &service{repo: repo, userRepo: userRepo}
 }
 
-func (s service) RegisterUserAccount(ctx context.Context, in *users.RegisterInput) (*RegisterResult, error) {
-	user, err := s.userSvc.RegisterUserAccount(ctx, in)
+func (s *service) RegisterUserAccount(ctx context.Context, in *users.RegisterInput) (*RegisterResult, error) {
+	hash, err := argon2id.CreateHash(in.Body.Password, argon2id.DefaultParams)
+	if err != nil {
+		return nil, err
+	}
+	cmd := &users.RegisterUserCmd{
+		Name:     in.Body.Name,
+		Email:    in.Body.Email,
+		Password: hash,
+	}
+	cmd.Normalize()
+	user, err := s.userRepo.CreateUser(ctx, cmd)
 	if err != nil {
 		return nil, err
 	}
@@ -48,12 +59,13 @@ func (s service) RegisterUserAccount(ctx context.Context, in *users.RegisterInpu
 		return nil, fmt.Errorf("create session after registration: %w", err)
 	}
 	return &RegisterResult{
+		Token:   token,
 		User:    *user,
 		Session: *sess,
 	}, nil
 }
 
-func (s service) Login(ctx context.Context, in *loginInput) (*LoginResult, error) {
+func (s *service) Login(ctx context.Context, in *loginInput) (*LoginResult, error) {
 	//	Get user by Email
 	// Compare user's password hash with provided password
 	//	Create new session if password matches, otherwise return unauthorized domain error

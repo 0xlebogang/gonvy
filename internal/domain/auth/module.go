@@ -19,9 +19,8 @@ func BuildModule(db *ent.Client) Module {
 		panic("db is nil")
 	}
 	userRepo := users.NewRepository(db)
-	userSvc := users.NewService(userRepo)
 	authRepo := newRepository(db)
-	authSvc := newService(authRepo, userSvc)
+	authSvc := newService(authRepo, userRepo)
 	return &module{handlers: newhandler(authSvc)}
 }
 

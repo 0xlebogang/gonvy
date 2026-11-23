@@ -10,7 +10,7 @@ type RegisterUserCmd struct {
 	Password string
 }
 
-func (cmd *RegisterUserCmd) normalize() {
+func (cmd *RegisterUserCmd) Normalize() {
 	cmd.Name = strings.TrimSpace(cmd.Name)
 	cmd.Email = strings.TrimSpace(strings.ToLower(cmd.Email))
 }

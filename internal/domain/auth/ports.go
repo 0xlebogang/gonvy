@@ -21,6 +21,7 @@ type Session struct {
 }
 
 type RegisterResult struct {
+	Token   string
 	User    users.RegisteredUser
 	Session Session
 }

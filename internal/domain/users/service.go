@@ -32,6 +32,6 @@ func (s *service) RegisterUserAccount(ctx context.Context, in *RegisterInput) (*
 		Email:    in.Body.Email,
 		Password: hash,
 	}
-	cmd.normalize()
+	cmd.Normalize()
 	return s.repo.CreateUser(ctx, cmd)
 }
