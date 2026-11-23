@@ -16,11 +16,11 @@ type CreateSessionCmd struct {
 }
 
 type Session struct {
-	ID        string
-	Token     string
-	ExpiresAt time.Time
-	IPAddress *string
-	UserAgent *string
+	ID        string    `json:"id"`
+	Token     string    `json:"token"`
+	ExpiresAt time.Time `json:"expires_at"`
+	IPAddress *string   `json:"ip_address"`
+	UserAgent *string   `json:"user_agent"`
 }
 
 type RegisterResult struct {
@@ -52,13 +52,21 @@ func (l *loginInput) nomalize() {
 }
 
 type User struct {
-	ID    string
-	Name  string
-	Email string
+	ID    string `json:"id"`
+	Name  string `json:"name"`
+	Email string `json:"email"`
 }
 
 type LoginResult struct {
 	Token   string
 	User    User
 	Session Session
+}
+
+type loginOutput struct {
+	Body struct {
+		Token   string  `json:"token"`
+		User    User    `json:"user"`
+		Session Session `json:"session"`
+	}
 }
