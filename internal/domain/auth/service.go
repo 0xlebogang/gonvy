@@ -67,7 +67,52 @@ func (s *service) RegisterUserAccount(ctx context.Context, in *users.RegisterInp
 
 func (s *service) Login(ctx context.Context, in *loginInput) (*LoginResult, error) {
 	//	Get user by Email
+	in.nomalize()
+	u, err := s.userRepo.FindUserByEmail(ctx, in.Body.Email)
+	if err != nil {
+		return nil, err
+	}
+	user := &User{
+		ID:    u.ID,
+		Name:  u.Name,
+		Email: u.Email,
+	}
 	// Compare user's password hash with provided password
+	var hash string
+	for _, acc := range u.Edges.Accounts {
+		if acc.ProviderID == "credential" && acc.Password != nil {
+			hash = *acc.Password
+			break
+		}
+	}
+	if hash == "" {
+		return nil, ErrUnauthorized
+	}
+	match, err := argon2id.ComparePasswordAndHash(in.Body.Password, hash)
+	if err != nil {
+		return nil, err
+	}
+	if !match {
+		return nil, ErrUnauthorized
+	}
 	//	Create new session if password matches, otherwise return unauthorized domain error
-	return nil, nil
+	token, err := newSession()
+	if err != nil {
+		return nil, err
+	}
+	cmd := &CreateSessionCmd{
+		UserID:    u.ID,
+		Token:     token,
+		ExpiresAt: time.Now().UTC().Add(sessionTTL),
+	}
+	sess, err := s.repo.CreateSession(ctx, cmd)
+	if err != nil {
+		return nil, err
+	}
+	out := &LoginResult{
+		Token:   token,
+		Session: *sess,
+		User:    *user,
+	}
+	return out, nil
 }

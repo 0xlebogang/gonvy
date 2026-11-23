@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"strings"
 	"time"
 
 	"gonvy.internal/internal/domain/users"
@@ -18,6 +19,8 @@ type Session struct {
 	ID        string
 	Token     string
 	ExpiresAt time.Time
+	IPAddress *string
+	UserAgent *string
 }
 
 type RegisterResult struct {
@@ -44,6 +47,10 @@ type loginInput struct {
 	}
 }
 
+func (l *loginInput) nomalize() {
+	l.Body.Email = strings.ToLower(strings.TrimSpace(l.Body.Email))
+}
+
 type User struct {
 	ID    string
 	Name  string
@@ -51,6 +58,7 @@ type User struct {
 }
 
 type LoginResult struct {
+	Token   string
 	User    User
 	Session Session
 }

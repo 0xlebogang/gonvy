@@ -115,6 +115,7 @@ func (r *repository) FindUserByEmail(ctx context.Context, email string) (*ent.Us
 		if ent.IsNotFound(err) {
 			return nil, ErrUserNotFound
 		}
+		return nil, fmt.Errorf("find user: %w", err)
 	}
 	return out, nil
 }
