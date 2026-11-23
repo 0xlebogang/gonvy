@@ -5,10 +5,13 @@ import (
 	"fmt"
 
 	"gonvy.internal/ent"
+	"gonvy.internal/ent/account"
+	"gonvy.internal/ent/user"
 )
 
 type Repository interface {
-	CreateUser(ctx context.Context, cmd *RegisterUserCmd) (*RegisterResult, error)
+	CreateUser(ctx context.Context, cmd *RegisterUserCmd) (*RegisteredUser, error)
+	FindUserByEmail(ctx context.Context, email string) (*ent.User, error)
 }
 
 type repository struct {
@@ -89,4 +92,20 @@ func (r *repository) createUserTx(ctx context.Context, cmd *RegisterUserCmd) (*R
 		User:    *u,
 		Account: *a,
 	}, nil
+}
+
+func (r *repository) FindUserByEmail(ctx context.Context, email string) (*ent.User, error) {
+	out, err := r.db.User.Query().
+		Where(user.EmailEQ(email)).
+		WithAccounts(func(query *ent.AccountQuery) {
+			query.Where(account.HasUserWith(user.Email(email)))
+		}).
+		Only(ctx)
+	if err != nil {
+		if ent.IsNotFound(err) {
+			return nil, ErrUserNotFound
+		}
+		return nil, fmt.Errorf("find user: %w", err)
+	}
+	return out, nil
 }

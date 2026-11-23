@@ -35,6 +35,14 @@ func (h *handler) Mount(api huma.API) {
 		Tags:          []string{"Auth"},
 		DefaultStatus: http.StatusCreated,
 	}, h.register)
+	huma.Register(grp, huma.Operation{
+		OperationID:   "auth:login",
+		Method:        http.MethodPost,
+		Path:          "/login",
+		Summary:       "Authenticate an existing user and create a session",
+		Tags:          []string{"Auth"},
+		DefaultStatus: http.StatusOK,
+	}, h.login)
 }
 
 func (h *handler) register(ctx context.Context, in *users.RegisterInput) (*registerOutput, error) {
@@ -52,5 +60,20 @@ func (h *handler) register(ctx context.Context, in *users.RegisterInput) (*regis
 	resp.Body.Email = out.User.Email
 	resp.Body.Token = out.Session.Token
 	resp.Body.ExpiresAt = out.Session.ExpiresAt
+	return resp, nil
+}
+
+func (h *handler) login(ctx context.Context, in *loginInput) (*loginOutput, error) {
+	out, err := h.svc.Login(ctx, in)
+	if err != nil {
+		if errors.Is(err, users.ErrUserNotFound) {
+			return nil, httperr.Unauthorized("")
+		}
+		return nil, err
+	}
+	resp := &loginOutput{}
+	resp.Body.Token = out.Session.Token
+	resp.Body.User = out.User
+	resp.Body.Session = out.Session
 	return resp, nil
 }

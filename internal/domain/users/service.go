@@ -32,10 +32,6 @@ func (s *service) RegisterUserAccount(ctx context.Context, in *RegisterInput) (*
 		Email:    in.Body.Email,
 		Password: hash,
 	}
-	cmd.normalize()
-	out, err := s.repo.CreateUser(ctx, cmd)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
+	cmd.Normalize()
+	return s.repo.CreateUser(ctx, cmd)
 }
